@@ -1,6 +1,9 @@
+
+var tweetID=require('mongodb').ObjectId; //creates an id for a element
 var express = require('express');
 var router = express.Router();
 var TwitterUser=require('../models/TwitterSchema');
+// var tweetID=require('mongodb').ObjectId; //creates an id for a element
 
 var bCrypt = require('bcrypt-nodejs'); // used to hash paswords
 var passport = require('passport'); //middleware for authentication
@@ -33,6 +36,27 @@ var isValidPassword = function(user, password){
 var createHash = function(password){
   return bCrypt.hashSync(password, bCrypt.genSaltSync(10), null);
 };
+
+router.get('/', function(req, res, next) {
+  console.log(req.session.username);
+  TwitterUser.findOne({username:req.session.username},(err,results)=>
+  {
+    err ? res.send(err): res.send(results)
+  })
+});
+
+// creates a tweet for a user
+router.post('/tweets',(req,res)=>
+{
+  TwitterUser.findOneAndUpdate({username:req.session.username},{$push:{tweets:{message:req.body.message,image:req.body.image,private:req.body.private,_id:new tweetID()}}},(err,results)=>
+  {
+    console.log(`id:${req.body}`);
+    err ? res.send(err):res.send('added')
+  })
+});
+
+
+
 
 
 // This is the "strategy" for signing up a new user
@@ -139,11 +163,7 @@ router.get('/faillogin',(req,res)=>
   res.send('Incorrect Username/Password')
 });
 
-/* GET users listing. */
-router.get('/', function(req, res, next) {
-  console.log(req.session);
-  res.send('respond with a resource');
-});
+
 router.get('/logout', (req, res, next) => {
   console.log(req.session);
   // Clearing the session (cookie) to get rid of the saved username
