@@ -55,6 +55,23 @@ router.post('/tweets',(req,res)=>
   })
 });
 
+//find a specific tweet
+router.get('/tweets/:_id',(req,res)=>
+{
+  TwitterUser.findOne({tweets:{_id:req.params._id}},(err,results)=>
+  {
+    if(err) res.send(err);
+
+    else
+    {
+
+      // console.log(results['tweets'][0]);
+      res.send(results);
+    }
+  })
+});
+
+
 
 
 
