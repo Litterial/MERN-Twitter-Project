@@ -176,12 +176,14 @@ router.post('/login',passport.authenticate('local',{failureRedirect:'/users/fail
     {
       console.log(req.body);
       req.session.username=req.user.username;
-      res.send(`${req.body.username} is logged in`)
+      context={message:`${req.body.username} is logged in`,logged:true};
+      res.send(context)
     });
 
 router.get('/faillogin',(req,res)=>
 {
-  res.send('Incorrect Username/Password')
+  context={message:`bad`,logged:false};
+  res.send(context)
 });
 
 

@@ -1,18 +1,23 @@
 import React, {Component} from 'react';
-import {BrowserRouter as Router,Route,Link} from 'react-router-dom'
+import {BrowserRouter as Router,Route,Link,Redirect} from 'react-router-dom'
 import '../App.css'
 import Register from "./Register";
+import Search from "./Search";
+import LoginFail from "./LoginFail";
 export default class HomePage extends Component {
 
     constructor(props)
     {
         super(props);
         this.state=
-            {logged:false,username:null,tweets:null}
+            {logged:false,
+                message:''}
     }
+
 
     login=(e)=>
     {
+        e.preventDefault();
         fetch('/users/login',
             {
                     method:"POST",
@@ -20,19 +25,45 @@ export default class HomePage extends Component {
                     body:JSON.stringify({username:e.target.username.value,password:e.target.password.value})
 
             })
+            .then(data=>data.json())
+            .then(jsonedData=>this.setState({logged:jsonedData['logged'],message:jsonedData['message']}))
 
     };
-    registerLink=(e)=>
+
+    logout=(e)=>
     {
-        this.props.changeRegisterTrue()
+        this.setState({logged:false,message:''});
+        fetch('/users/logout')
+            .then(data=>data.text())
+            .then(text=>console.log(text))
+
 
     };
 
     render() {
-        return (
+        if (this.state.logged)
+        {
+            return(
+                <div>
+                    test
+                    <Link to='/home' onClick={this.logout}>LogOut</Link>
+                </div>
+            )
 
+        }
+
+        if (this.state.message=='bad')
+        {
+            return(
+                <div>
+                    <Redirect to={'/loginFail'}/>
+                </div>
+            )
+        }
+        return (
             <div>
                 <h1>Login</h1>
+                {this.state.message}
                <form onSubmit={this.login} >
                 <div className='i-block'>
                <label htmlFor='username'>Username</label>
@@ -48,10 +79,10 @@ export default class HomePage extends Component {
                        <input type='submit' name='submit'/>
                    </div>
                </form>
-            <Router>
-                <Link to='/register' onClick={this.registerLink}>Register</Link>
-                {/*<Route path={'/register'} component={()=><Register/>}/>*/}
-            </Router>
+                <Link to={'/home'}>Home</Link>
+                <Link to={'/home/search'}>Search</Link>
+                <Link to='/register'>Register</Link>
+                <Link to='/home' onClick={this.logout}>LogOut</Link>
             </div>
         );
     }

@@ -1,36 +1,41 @@
 import React, {Component} from 'react';
 import {BrowserRouter as Router,Route,Link} from 'react-router-dom'
 import '../App.css'
-export default class Register extends Component {
+
+export default class LoginFail extends Component{
 
     constructor(props)
     {
         super(props);
-        this.state={message:''}
+        this.state=
+            {logged:false,
+                message:''}
     }
 
 
-    registerForm=(e)=>
+    login=(e)=>
     {
         e.preventDefault();
-        fetch('users/register',
+        fetch('/users/login',
             {
-                    method:'POST',
-                    headers:
-                        {'Accept':'application/json', 'Content-Type':'application/json',},
-                    body:JSON.stringify({username:e.target.username.value, password:e.target.password.value,}),
+                method:"POST",
+                headers:{"Accept":"application/json","Content-Type":"application/json"},
+                body:JSON.stringify({username:e.target.username.value,password:e.target.password.value})
+
             })
-            .then(data=>data.text())
-            .then(message=>this.setState({message:message}))
+            .then(data=>data.json())
+            .then(jsonedData=>this.setState({logged:jsonedData['logged'],message:jsonedData['message']}))
 
     };
-    render() {
-        return (
 
+
+    render()
+    {
+        return(
             <div>
-                <Link to='/home'>Home</Link>
-                <h1>Register</h1>
-                <form onSubmit={this.registerForm} >
+            The username and password you entered did not match our records. Please double-check and try again
+            <div>
+                <form onSubmit={this.login} >
                     <div className='i-block'>
                         <label htmlFor='username'>Username</label>
                         <br/>
@@ -45,8 +50,11 @@ export default class Register extends Component {
                         <input type='submit' name='submit'/>
                     </div>
                 </form>
-                {this.state.message}
+                <Link to={'/home'}>Home</Link>
+                <Link to={'/home/search'}>Search</Link>
+                <Link to='/register'>Register</Link>
             </div>
-        );
+            </div>
+        )
     }
 }
