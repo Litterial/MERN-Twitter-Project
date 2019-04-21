@@ -38,7 +38,7 @@ var createHash = function(password){
 };
 
 router.get('/', function(req, res, next) {
-  console.log(req.session.username);
+  console.log(req.session);
   TwitterUser.findOne({username:req.session.username},(err,results)=>
   {
     err ? res.send(err): res.send(results)
@@ -56,20 +56,27 @@ router.post('/tweets',(req,res)=>
 });
 
 //find a specific tweet
-router.get('/tweets/:_id',(req,res)=>
-{
-  TwitterUser.findOne({tweets:{_id:req.params._id}},(err,results)=>
-  {
-    if(err) res.send(err);
+router.route('/tweets/:_id')
+    .get((req,res)=>{
+      TwitterUser.findOne({tweets:{$elemMatch:{_id:req.params._id}}},(err,results)=>
+      {
+        if(err) res.send(err);
+        else res.send(results);
+      })})
 
-    else
+    .put((req,res)=>
     {
-
-      // console.log(results['tweets'][0]);
-      res.send(results);
-    }
-  })
-});
+      TwitterUser.findOneAndUpdate({tweets:{$elemMatch:{_id:req.params._id}}},
+          {'tweets.$.message':req.body.message,'tweets.$.image':req.body.image,'tweets.$.private':req.body.private},(err,results)=>
+      {
+        if(err) res.send(err);
+        else
+        {
+          // console.log(results['tweets'][0]);
+          res.send("Updated");
+        }
+      })
+    });
 
 
 
@@ -77,9 +84,7 @@ router.get('/tweets/:_id',(req,res)=>
 
 
 // This is the "strategy" for signing up a new user
-passport.use('signup', new LocalStrategy({
-      passReqToCallback : true
-    },
+passport.use('signup', new LocalStrategy({passReqToCallback : true},
     //req is request of the route that called the strategy
     //username and password are passed by passport by default
     //done is the function to break to end the strategy(callback function)
@@ -108,7 +113,7 @@ passport.use('signup', new LocalStrategy({
             // create the user
             var newUser = new TwitterUser();
             // set the user's local credentials
-            newUser.username = username;
+            newUser.username = req.body.username;
             newUser.password = createHash(password);
             newUser.image = req.body.image;
             newUser.background = req.body.background;
@@ -130,8 +135,7 @@ passport.use('signup', new LocalStrategy({
       // Delay the execution of findOrCreateUser and execute
       // the method in the next tick of the event loop
       process.nextTick(findOrCreateUser);
-    })
-);
+    }));
 
 router.post('/register', passport.authenticate('signup', { failureRedirect:'/users/failregister',}),
     (req,res)=>
@@ -171,7 +175,7 @@ router.post('/login',passport.authenticate('local',{failureRedirect:'/users/fail
     (req,res)=>
     {
       console.log(req.body);
-      req.session.username=req.body.username;
+      req.session.username=req.user.username;
       res.send(`${req.body.username} is logged in`)
     });
 
@@ -182,9 +186,12 @@ router.get('/faillogin',(req,res)=>
 
 
 router.get('/logout', (req, res, next) => {
+  console.log('___________________________');
   console.log(req.session);
   // Clearing the session (cookie) to get rid of the saved username
-  req.session = null;
+  // req.session.username =null;
+
+  req.session=null;
   console.log(req.session);
 
   res.send("logged out")
