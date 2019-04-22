@@ -6,64 +6,55 @@ import Search from "./Search";
 import LoginFail from "./LoginFail";
 export default class HomePage extends Component {
 
-    constructor(props)
+    componentDidMount=(e)=>
     {
-        super(props);
-        this.state=
-            {logged:false,
-                message:''}
-    }
+        // console.log(this.props.mapped)
 
+    } ;
 
     login=(e)=>
     {
         e.preventDefault();
         fetch('/users/login',
             {
-                    method:"POST",
-                    headers:{"Accept":"application/json","Content-Type":"application/json"},
-                    body:JSON.stringify({username:e.target.username.value,password:e.target.password.value})
-
+                method:"POST",
+                headers:{"Accept":"application/json","Content-Type":"application/json"},
+                body:JSON.stringify({username:e.target.username.value,password:e.target.password.value})
             })
             .then(data=>data.json())
-            .then(jsonedData=>this.setState({logged:jsonedData['logged'],message:jsonedData['message']}))
+            .then(jsondata=>this.props.loginInfo(jsondata['logged'],jsondata['message'],jsondata['truelog']))
+
 
     };
 
-    logout=(e)=>
+    homelogout=(e)=>
     {
-        this.setState({logged:false,message:''});
-        fetch('/users/logout')
-            .then(data=>data.text())
-            .then(text=>console.log(text))
-
+        this.props.homelogout()
+        // this.setState({logged:false,message:''});
+        // fetch('/users/logout')
+        //     .then(data=>data.text())
+        //     .then(text=>console.log(text))
 
     };
 
     render() {
-        if (this.state.logged)
+        if(this.props.logged)
         {
+            console.log(this.props.mapped)
+            console.log(this.props.mapped2)
             return(
                 <div>
-                    test
-                    <Link to='/home' onClick={this.logout}>LogOut</Link>
-                </div>
-            )
-
-        }
-
-        if (this.state.message=='bad')
-        {
-            return(
-                <div>
-                    <Redirect to={'/loginFail'}/>
+                <h1>Test</h1>
+                    {this.props.mapped}
+                    {this.props.mapped2}
+                <Link to='/home' onClick={this.homelogout}>LogOut</Link>
                 </div>
             )
         }
         return (
             <div>
                 <h1>Login</h1>
-                {this.state.message}
+                <h2> {this.props.message}</h2>
                <form onSubmit={this.login} >
                 <div className='i-block'>
                <label htmlFor='username'>Username</label>
@@ -82,7 +73,10 @@ export default class HomePage extends Component {
                 <Link to={'/home'}>Home</Link>
                 <Link to={'/home/search'}>Search</Link>
                 <Link to='/register'>Register</Link>
-                <Link to='/home' onClick={this.logout}>LogOut</Link>
+                <Link to='/home' onClick={this.homelogout}>LogOut</Link>
+
+
+
             </div>
         );
     }

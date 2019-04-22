@@ -37,18 +37,18 @@ var createHash = function(password){
   return bCrypt.hashSync(password, bCrypt.genSaltSync(10), null);
 };
 
-router.get('/', function(req, res, next) {
+router.get('/:user', function(req, res, next) {
   console.log(req.session);
-  TwitterUser.findOne({username:req.session.username},(err,results)=>
+  TwitterUser.find({username:req.params.user},(err,results)=>
   {
     err ? res.send(err): res.send(results)
   })
 });
 
 // creates a tweet for a user
-router.post('/tweets',(req,res)=>
+router.post('/tweets/:user',(req,res)=>
 {
-  TwitterUser.findOneAndUpdate({username:req.session.username},{$push:{tweets:{message:req.body.message,image:req.body.image,private:req.body.private,_id:new tweetID()}}},(err,results)=>
+  TwitterUser.findOneAndUpdate({username:req.params.user},{$push:{tweets:{message:req.body.message,image:req.body.image,private:req.body.private,_id:new tweetID()}}},(err,results)=>
   {
     console.log(`id:${req.body}`);
     err ? res.send(err):res.send('added')
@@ -176,13 +176,13 @@ router.post('/login',passport.authenticate('local',{failureRedirect:'/users/fail
     {
       console.log(req.body);
       req.session.username=req.user.username;
-      context={message:`${req.body.username} is logged in`,logged:true};
+      context={message:req.body.username,logged:true,truelog:'no'};
       res.send(context)
     });
 
 router.get('/faillogin',(req,res)=>
 {
-  context={message:`bad`,logged:false};
+  context={message:false,logged:false,truelog:'yes'};
   res.send(context)
 });
 
