@@ -3,10 +3,12 @@ import logo from './logo.svg';
 import './App.css';
 import HomePage from "./Components/HomePage";
 import Register from "./Components/Register";
-import {BrowserRouter as Router,Route,Link} from 'react-router-dom'
+import {BrowserRouter as Router,Route,Link,Redirect} from 'react-router-dom'
 import Search from "./Components/Search";
 import LoginFail from "./Components/LoginFail";
-
+import Banner from "./Components/Banner";
+import Edit from "./Components/Edit";
+// import "bootstrap/dist/css/bootstrap.min.css";
 
 class App extends Component
 {
@@ -15,10 +17,11 @@ class App extends Component
         super(props);
         this.state=
             {
-                logged:false,
-                message:'',
-                truelog:'no',
-                user:[]
+                // logged:false,  //check if user is logged in
+                username:null,  //looks at user's username
+                // truelog:'no',  //checks
+                user:[], // puts all the userdata inside of an array
+                tweet_id:false, //holds the id of the tweet
             }
 
     }
@@ -30,73 +33,55 @@ class App extends Component
 
     session=(e)=>
     {
-        if(this.state.message) {
-            fetch('/users/' + this.state.message)
+        if(this.state.username) {   //if there is a user looged in, call this function to fetch all of the user's data from mongo
+            fetch('/users/' + this.state.username)
                 .then(data => data.json())
                 .then(jsondata => this.setState({user: jsondata}))
         }
     };
 
-    change=(e)=>
-    {
-        this.setState({message:''});
-    };
+    // change=(e)=>
+    // {
+    //     this.setState({username:''});
+    // };
 
-    loginInfo=(logged,message,truelog)=>
+    loginInfo=(username)=>   //function that runs when user enters information to login and calls back the session function
     {
-        this.setState({logged:logged,message:message,truelog:truelog});
+        this.setState({username:username});
         this.session();
     };
 
-    // login=(e)=>
-    // {
-    //     fetch('/users/login',
-    //         {
-    //             method:"POST",
-    //             headers:{"Accept":"application/json","Content-Type":"application/json"},
-    //             body:JSON.stringify({username:e.target.username.value,password:e.target.password.value})
-    //
-    //         })
-    //         .then(data=>data.json())
-    //         .then(data=>this.setState({logged:data['logged'],message:data['message'],truelog:data['truelog']}))
-    //
-    // };
-
-    logout=(e)=>
+     grabID=(e)=> //grabs the id of a tweet and sets the state of the tweet_id to the actual id of the tweet
+     {
+         e.preventDefault();
+         console.log(e.target.name);
+         this.setState({tweet_id:e.target.name});
+     };
+    logout=(e)=> //logs out the user
     {
-        this.setState({logged: false, message: '',truelog:'no'});
+        this.setState({ username: ''});
         fetch('/users/logout')
             .then(data => data.text())
             .then(text => console.log(text))
     };
 
-
-    // registerForm=(e)=>
-    // {
-    //     e.preventDefault();
-    //     fetch('users/register',
-    //         {
-    //             method:'POST',
-    //             headers:
-    //                 {'Accept':'application/json', 'Content-Type':'application/json',},
-    //             body:JSON.stringify({username:e.target.username.value, password:e.target.password.value,}),
-    //         })
-    //         .then(data=>data.text())
-    //         .then(message=>this.setState({message:message}))
-    //
-    // };
-
-
+    changeID=(e)=>
+    {
+      this.setState({tweet_id:false});
+      this.session()
+    };
 
 
     render()
     {
+
+
         console.log(this.state.user);
-        const mapped=this.state.user.map((ele)=>
+        const mapUser=this.state.user.map((ele)=> //maps all of the user information
         {
 
             return(
-                <div>
+                <div key={ele._id}>
                 <h1>{ele.username}</h1>
                     <h1>{ele.image}</h1>
                     <h1>{ele.password}</h1>
@@ -104,18 +89,23 @@ class App extends Component
                 </div>
             )
         });
-        const mapped2= this.state.user.map((test)=>
+        const mapTweets= this.state.user.map((test)=>  //maps all the user's tweets. I also reversed the array so I c
+        //list out the tweets in the most recent order. Here I can also set how many tweets I want to return
             {
 
                 return test.tweets.map((element,ndx)=> {
-                    console.log(element.message);
-                    if(ndx===test.tweets.length-1) {
+                    console.log(element._id);
+                    // this.setState({tweet_id:element.id});
+                   // if(ndx===test.tweets.length-1) {
                         return (
-                            <div>
+                            <div key={element._id}>
                                 <h1>{element.message}</h1>
+                                <h1>{element.image}</h1>
+                                <h1>{element.private}</h1>
+                                <button name={element._id}  onClick={this.grabID}>Edit</button>
                             </div>
                         )
-                    }
+                    //}
                 }).reverse()
             });
 
@@ -123,12 +113,9 @@ class App extends Component
         return (
           <div className="App">
             <header className="App-header">
-                <Router>
-                    <Route  path={'/home'} component={()=> <HomePage homelogout={this.logout} loginInfo={this.loginInfo} session={this.session} logged={this.state.logged} mapped={mapped} mapped2={mapped2}/>}/>
-                        <Route  path={'/home/search'} component={()=><Search/>}/>
-                    <Route  path={'/register'} component={()=><Register  register={this.registerForm}/>}/>
-                    {/*<Route path={'/loginFail'} component={()=><LoginFail change={this.change}/>}/>*/}
-                </Router>
+
+                <Banner homelogout={this.logout} loginInfo={this.loginInfo} session={this.session}
+                         mapUser={mapUser} mapTweets={mapTweets} tweet_id={this.state.tweet_id} username={this.state.username} changeID={this.changeID}/>
             </header>
           </div>
         );

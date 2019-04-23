@@ -29,7 +29,6 @@ export default class Register extends Component {
         return (
 
             <div>
-                <Link to='/home'>Home</Link>
                 <h1>Register</h1>
                 <form onSubmit={this.registerForm} >
                     <div className='i-block'>

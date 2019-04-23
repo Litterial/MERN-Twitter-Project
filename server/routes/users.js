@@ -3,8 +3,7 @@ var tweetID=require('mongodb').ObjectId; //creates an id for a element
 var express = require('express');
 var router = express.Router();
 var TwitterUser=require('../models/TwitterSchema');
-// var tweetID=require('mongodb').ObjectId; //creates an id for a element
-
+var TwitterHome=require('../models/HomeTweets');
 var bCrypt = require('bcrypt-nodejs'); // used to hash paswords
 var passport = require('passport'); //middleware for authentication
 var LocalStrategy = require('passport-local').Strategy;
@@ -50,30 +49,46 @@ router.post('/tweets/:user',(req,res)=>
 {
   TwitterUser.findOneAndUpdate({username:req.params.user},{$push:{tweets:{message:req.body.message,image:req.body.image,private:req.body.private,_id:new tweetID()}}},(err,results)=>
   {
-    console.log(`id:${req.body}`);
+    console.log(req.body);
     err ? res.send(err):res.send('added')
   })
 });
 
 //find a specific tweet
-router.route('/tweets/:_id')
+router.route('/mytweets/:_id')
     .get((req,res)=>{
       TwitterUser.findOne({tweets:{$elemMatch:{_id:req.params._id}}},(err,results)=>
       {
         if(err) res.send(err);
-        else res.send(results);
+        else {
+           for( var x=0; x<(results.tweets).length; x++)
+           {
+             if (results.tweets[x]._id == req.params._id)
+               res.send(results.tweets[x]);}
+
+        }
+
+            // if (x._id == req.params._id)
+            // res.send(results);}
       })})
 
     .put((req,res)=>
     {
+      console.log(req.params._id);
+      console.log(req.body);
+
       TwitterUser.findOneAndUpdate({tweets:{$elemMatch:{_id:req.params._id}}},
-          {'tweets.$.message':req.body.message,'tweets.$.image':req.body.image,'tweets.$.private':req.body.private},(err,results)=>
+          {"$set":{'tweets.$.message':req.body.message,'tweets.$.image':req.body.image,'tweets.$.private':req.body.private}},(err,results)=>
       {
         if(err) res.send(err);
         else
         {
-          // console.log(results['tweets'][0]);
-          res.send("Updated");
+          for( var x=0; x<(results.tweets).length; x++) {
+            if (results.tweets[x]._id == req.params._id) {
+              // console.log(results);
+              res.send(req.body)
+            }
+          }
         }
       })
     });
@@ -176,13 +191,13 @@ router.post('/login',passport.authenticate('local',{failureRedirect:'/users/fail
     {
       console.log(req.body);
       req.session.username=req.user.username;
-      context={message:req.body.username,logged:true,truelog:'no'};
+      context={username:req.body.username,truelog:'no'};
       res.send(context)
     });
 
 router.get('/faillogin',(req,res)=>
 {
-  context={message:false,logged:false,truelog:'yes'};
+  context={username:false,truelog:'yes'};
   res.send(context)
 });
 
@@ -197,6 +212,12 @@ router.get('/logout', (req, res, next) => {
   console.log(req.session);
 
   res.send("logged out")
+});
+________________________________________________________________________________________________________________________
+
+router.get('/HomeTweets',(req,res)=>
+{
+  TwitterHome.find({})
 });
 // router.get('/')
 module.exports = router;

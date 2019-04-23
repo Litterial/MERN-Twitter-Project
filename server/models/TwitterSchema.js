@@ -11,7 +11,7 @@ var Twitter=new Schema(
             [{
                 message: {type: String, required: true},
                 image:String,
-                private:Boolean,
+                private:String,
             }]
             }
 );
