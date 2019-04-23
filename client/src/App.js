@@ -9,6 +9,9 @@ import LoginFail from "./Components/LoginFail";
 import Banner from "./Components/Banner";
 import Edit from "./Components/Edit";
 // import "bootstrap/dist/css/bootstrap.min.css";
+// import { DropdownButton } from 'react-bootstrap';
+// import { MenuItem } from 'react-bootstrap';
+
 
 class App extends Component
 {
@@ -100,7 +103,7 @@ class App extends Component
                         return (
                             <div key={element._id}>
                                 <h1>{element.message}</h1>
-                                <h1>{element.image}</h1>
+                                <img src={element.image}></img>
                                 <h1>{element.private}</h1>
                                 <button name={element._id}  onClick={this.grabID}>Edit</button>
                             </div>

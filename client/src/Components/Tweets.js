@@ -12,6 +12,7 @@ export default class Tweets extends Component{
     addTweet=(e)=>
     {
         console.log(this.props.username);
+        console.log(e.target.date.value);
         e.preventDefault();
         fetch('/users/tweets/'+this.props.username,
             {
@@ -22,6 +23,7 @@ export default class Tweets extends Component{
                     image: e.target.image.value,
                     // private: true,
                     private: e.target.private.checked,
+                    date:e.target.date.value,
                 })
             })
                 .then(data=>data.text())
@@ -47,6 +49,7 @@ export default class Tweets extends Component{
                     <input type='text' id='image' name='image'/>
                     <label htmlFor='private'>Private only</label>
                     <input type='checkbox' id='private' name='private'/>
+                    <input type='hidden' name='date' value={Date.now()}/>
                     <button>Submit</button>
 
                 </form>

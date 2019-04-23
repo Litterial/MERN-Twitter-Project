@@ -36,6 +36,13 @@ var createHash = function(password){
   return bCrypt.hashSync(password, bCrypt.genSaltSync(10), null);
 };
 
+router.get('/', function(req, res, next) {
+  console.log(req.session);
+  TwitterUser.find({},(err,results)=>
+  {
+    err ? res.send(err): res.send(results)
+  })
+});
 router.get('/:user', function(req, res, next) {
   console.log(req.session);
   TwitterUser.find({username:req.params.user},(err,results)=>
@@ -44,10 +51,31 @@ router.get('/:user', function(req, res, next) {
   })
 });
 
+router.get('/alltweets/:search',(req,res)=>
+{
+  TwitterUser.find({"tweets.message":{"$regex":req.params.search,"$options":'i'},'tweets.private':'false'},(err,results)=>
+  {
+    if (err) res.send(err);
+    else
+   {
+     var tweetarray=[];
+     console.log((results).length);
+     for(x=0; x<(results).length;x++)
+     {
+       tweetarray.push({"username":results[x].username})
+     }
+     res.send(tweetarray)
+   }
+
+  })
+});
+
+
+
 // creates a tweet for a user
 router.post('/tweets/:user',(req,res)=>
 {
-  TwitterUser.findOneAndUpdate({username:req.params.user},{$push:{tweets:{message:req.body.message,image:req.body.image,private:req.body.private,_id:new tweetID()}}},(err,results)=>
+  TwitterUser.findOneAndUpdate({username:req.params.user},{$push:{tweets:{message:req.body.message,image:req.body.image,private:req.body.private,date:req.body.date,_id:new tweetID()}}},(err,results)=>
   {
     console.log(req.body);
     err ? res.send(err):res.send('added')
@@ -213,11 +241,14 @@ router.get('/logout', (req, res, next) => {
 
   res.send("logged out")
 });
-________________________________________________________________________________________________________________________
 
-router.get('/HomeTweets',(req,res)=>
-{
-  TwitterHome.find({})
-});
+
+// router.get('/HomeTweets',(req,res)=>
+// {
+//   TwitterHome.find({},(err,results)=>
+//   {
+//     res.send(results)
+//   })
+// });
 // router.get('/')
 module.exports = router;

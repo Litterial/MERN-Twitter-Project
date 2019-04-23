@@ -6,6 +6,10 @@ import Register from "./Register";
 import {BrowserRouter as Router, Route,Link,Redirect} from "react-router-dom";
 import Tweets from "./Tweets";
 import Edit from "./Edit";
+// import "bootstrap/dist/css/bootstrap.min.css";
+// import { DropdownButton } from 'react-bootstrap';
+// import { MenuItem } from 'react-bootstrap';
+
 
 
 export default class Banner extends Component{
@@ -69,6 +73,17 @@ export default class Banner extends Component{
         }
         return (
             <div>
+                {/*<div className="dropdown">*/}
+                {/*    <button className="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"*/}
+                {/*            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">*/}
+                {/*        Dropdown button*/}
+                {/*    </button>*/}
+                {/*    <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">*/}
+                {/*        <a className="dropdown-item" href="#">Action</a>*/}
+                {/*        <a className="dropdown-item" href="#">Another action</a>*/}
+                {/*        <a className="dropdown-item" href="#">Something else here</a>*/}
+                {/*    </div>*/}
+                {/*</div>*/}
                 <h1>Login</h1>
                 <form onSubmit={this.login} >
                     <div className='i-block'>
