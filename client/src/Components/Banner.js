@@ -14,6 +14,10 @@ import Edit from "./Edit";
 
 export default class Banner extends Component{
 
+    constructor(props)
+    {
+        super(props);
+    }
     componentDidMount=(e)=>
     {
         // console.log(this.props.mapped)
@@ -45,6 +49,7 @@ export default class Banner extends Component{
 
     };
 
+
     render() {
         if(this.props.username)
         {
@@ -63,27 +68,17 @@ export default class Banner extends Component{
                     <Link to={'/tweets'}>Tweets</Link>
                         {/*<Route   exact path={'/'} component={()=> <HomePage/>}/>*/}
                         {/*{this.props.tweet_id}?(<Redirect to='/edit'/>):()*/}
-                        <Route exact path={'/'} component={()=> <Tweets tweets={this.props.mapTweets} username={this.props.username} session={this.props.session} tweet_id={this.props.tweet_id} changeID={this.props.changeID}/> }/>
+                        <Route exact path={'/'} component={()=> <Tweets tweets={this.props.mapTweets} username={this.props.username} session={this.props.session} tweet_id={this.props.tweet_id} changeID={this.props.changeID}/>}/>
                         <Route  path={'/search'} component={()=><Search/>}/>
-                        <Route path={'/edit'} component={()=><Edit tweet_id={this.props.tweet_id}  session={this.props.session}/>}/>
+                        <Route path={'/edit'} component={()=><Edit /*tweet_id={this.props.tweet_id}*/ session={this.props.session} id={this.props.tweet_id} changeID={this.props.changeID} />}/>
                         <Route  path={'/register'} component={()=><Register  register={this.registerForm}/>}/>
                     </Router>
                 </div>
             )
         }
         return (
+
             <div>
-                {/*<div className="dropdown">*/}
-                {/*    <button className="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"*/}
-                {/*            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">*/}
-                {/*        Dropdown button*/}
-                {/*    </button>*/}
-                {/*    <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">*/}
-                {/*        <a className="dropdown-item" href="#">Action</a>*/}
-                {/*        <a className="dropdown-item" href="#">Another action</a>*/}
-                {/*        <a className="dropdown-item" href="#">Something else here</a>*/}
-                {/*    </div>*/}
-                {/*</div>*/}
                 <h1>Login</h1>
                 <form onSubmit={this.login} >
                     <div className='i-block'>
@@ -101,12 +96,15 @@ export default class Banner extends Component{
                     </div>
                 </form>
 
+
                 <Router>
                     <Link to={'/'}>Home</Link>
                     <Link to={'/search'}>Search</Link>
                     <Link to='/register'>Register</Link>
                     <Link to='/' onClick={this.homelogout}>LogOut</Link>
-                    <Route  exact path={'/'} component={()=> <HomePage/>}/>
+                    {/*<Route  exact path={'/'} component={()=> <HomePage/>}/>*/}
+                    <Route exact path={'/'} component={()=> <Tweets tweets={this.props.mapTweets} username={this.props.username} session={this.props.session} tweet_id={this.props.tweet_id} changeID={this.props.changeID} mapHomeTweets={this.props.mapHomeTweets} /> }/>
+
                     <Route  path={'/search'} component={()=><Search/>}/>
                     <Route  path={'/register'} component={()=><Register  register={this.registerForm}/>}/>
                     {/*<Route path={'/loginFail'} component={()=><LoginFail change={this.change}/>}/>*/}

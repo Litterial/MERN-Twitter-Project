@@ -1,23 +1,31 @@
 import React, { Component } from 'react';
 import '../App.css';
+import {BrowserRouter as Router,Route,Link,Redirect} from 'react-router-dom'
+
 
 export default class Edit extends Component{
 
     constructor(props)
     {
         super(props);
-        this.state={editarray:[]}
+        this.state={editarray:[]};
+
     }
 
-    componentDidMount()
+    componentDidMount=(e)=>
     {
-        if(this.props.id) {
+        this.mounted = true;
+        if(this.mounted) {
             fetch('/users/mytweets/' + this.props.id)
                 .then(data => data.json())
                 .then(jsondata => this.setState({editarray: [jsondata]}))
         }
-    }
+    };
 
+    componentWillUnmount=(e)=> {
+        this.mounted=false;
+        this.setState({editarray:[]});
+    };
 
     editTweet=(e)=>
     {
@@ -32,7 +40,7 @@ export default class Edit extends Component{
             .then(data=>data.json())
             .then(jsondata=>this.setState({editarray:[jsondata]}));
                  console.log('editarray');
-                console.log(this.state.editarray);
+                // console.log(this.state.editarray);
                 this.props.changeID();
                 // this.props.session();
             // .then(jsonData=>d)
@@ -40,6 +48,11 @@ export default class Edit extends Component{
 
 
     render(){
+
+        if(this.props.id==false)
+        {
+            return <Redirect to='/'/>
+        }
 
         console.log(this.state.editarray);
         console.log('___________________');

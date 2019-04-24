@@ -51,9 +51,41 @@ router.get('/:user', function(req, res, next) {
   })
 });
 
-router.get('/alltweets/:search',(req,res)=>
+router.get('/home/tweets',(req,res)=>
 {
-  TwitterUser.find({"tweets.message":{"$regex":req.params.search,"$options":'i'},'tweets.private':'false'},(err,results)=>
+  TwitterUser.find({},(err,results)=>
+  {
+    console.log('1st test')
+    if (err) res.send(err);
+    else
+    {
+      console.log('test');
+      var homearray=[];
+      console.log((results).length);
+      for(x=0; x<(results).length;x++)
+      {
+        console.log((results[x].tweets).length);
+        for(y=0;y<((results[x].tweets).length);y++)
+        {
+          console.log(results[x].tweets[y]);
+          console.log(results[x].tweets[y].message);
+          if(results[x].tweets[y].private=='false' )
+          {
+            homearray.push({"username":results[x].username,"tweets":results[x].tweets[y]});
+
+          }
+        }
+      }
+      var sorted=homearray.sort((a,b)=>b.tweets.date-a.tweets.date);
+      res.send(sorted)
+    }
+
+  })
+})
+
+router.get('/search/:search',(req,res)=>
+{
+  TwitterUser.find({"tweets.message":{"$regex":req.params.search,"$options":'i'}},(err,results)=>
   {
     if (err) res.send(err);
     else
@@ -62,7 +94,17 @@ router.get('/alltweets/:search',(req,res)=>
      console.log((results).length);
      for(x=0; x<(results).length;x++)
      {
-       tweetarray.push({"username":results[x].username})
+       console.log((results[x].tweets).length);
+       for(y=0;y<((results[x].tweets).length);y++)
+       {
+         console.log(results[x].tweets[y]);
+         console.log(results[x].tweets[y].message);
+         if((results[x].tweets[y].message).toLowerCase().includes((req.params.search).toLowerCase()) && results[x].tweets[y].private=='false' )
+         {
+           tweetarray.push({"username":results[x].username,"tweets":results[x].tweets[y]})
+
+         }
+       }
      }
      res.send(tweetarray)
    }

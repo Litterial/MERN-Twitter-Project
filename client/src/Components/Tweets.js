@@ -1,13 +1,12 @@
 import React, { Component } from 'react';
 import '../App.css';
 import Edit from "./Edit";
+import {BrowserRouter as Router, Route,Link,Redirect} from "react-router-dom";
 
 
-export default class Tweets extends Component{
-    constructor(props)
-    {
-        super(props)
-    }
+export default class Tweets extends Component
+{
+    constructor(props) {super(props)}
 
     addTweet=(e)=>
     {
@@ -16,16 +15,18 @@ export default class Tweets extends Component{
         e.preventDefault();
         fetch('/users/tweets/'+this.props.username,
             {
-                method: 'POST',
-                headers: {'Accept': 'application/json', 'Content-Type': 'application/json'},
-                body: JSON.stringify({
-                    message: e.target.message.value,
-                    image: e.target.image.value,
-                    // private: true,
-                    private: e.target.private.checked,
-                    date:e.target.date.value,
+                    method: 'POST',
+                    headers: {'Accept': 'application/json', 'Content-Type': 'application/json'},
+                    body: JSON.stringify
+                    (
+                        {
+                                    message: e.target.message.value,
+                                    image: e.target.image.value,
+                                    private: e.target.private.checked,
+                                    date:e.target.date.value,
+                                }
+                    )
                 })
-            })
                 .then(data=>data.text())
                 .then(()=>this.props.session())
 
@@ -33,13 +34,16 @@ export default class Tweets extends Component{
     };
     render()
     {
+
       if(this.props.tweet_id)
       {
-          return <Edit id={this.props.tweet_id} changeID={this.props.changeID} session={this.props.session}/>
+          return <Redirect to='/edit'/>
+
+          // return <Edit id={this.props.tweet_id} changeID={this.props.changeID} session={this.props.session}/>
       }
 
-
-
+      if(this.props.username)
+      {
         return(
             <div>
                 <form onSubmit={this.addTweet}>
@@ -53,10 +57,15 @@ export default class Tweets extends Component{
                     <button>Submit</button>
 
                 </form>
-
-
                 <h1>{this.props.tweets}</h1>
             </div>
-        );
+        )
+      }
+
+          return(
+              <div>
+          {this.props.mapHomeTweets}
+              </div>
+          )
     }
-}
+};

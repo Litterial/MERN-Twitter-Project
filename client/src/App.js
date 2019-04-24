@@ -25,14 +25,22 @@ class App extends Component
                 // truelog:'no',  //checks
                 user:[], // puts all the userdata inside of an array
                 tweet_id:false, //holds the id of the tweet
+                hometweets:[]
             }
 
     }
 
     componentDidMount=(e)=>
     {
-
+      fetch('/users/home/tweets')
+          .then (data=>data.json())
+          .then(jsondata=>this.setState({hometweets:jsondata}))
     };
+
+     componentWillUnmount=(e)=> {
+         this.setState({hometweets:[]});
+         this.setState({user:[]});
+     }
 
     session=(e)=>
     {
@@ -40,7 +48,10 @@ class App extends Component
             fetch('/users/' + this.state.username)
                 .then(data => data.json())
                 .then(jsondata => this.setState({user: jsondata}))
+
         }
+
+
     };
 
     // change=(e)=>
@@ -71,7 +82,8 @@ class App extends Component
     changeID=(e)=>
     {
       this.setState({tweet_id:false});
-      this.session()
+      this.session();
+
     };
 
 
@@ -80,6 +92,19 @@ class App extends Component
 
 
         console.log(this.state.user);
+
+        const mapHomeTweets=this.state.hometweets.map((ele)=>
+        {
+            return(
+                <div key={ele.tweets._id}>
+                    <h1>{ele.username}</h1>
+                    <h1>{ele.tweets.message}</h1>
+                    <h1>{ele.tweets.image}</h1>
+                    <h1>{ele.tweets.private}</h1>
+                </div>
+
+            )
+        });
         const mapUser=this.state.user.map((ele)=> //maps all of the user information
         {
 
@@ -103,7 +128,7 @@ class App extends Component
                         return (
                             <div key={element._id}>
                                 <h1>{element.message}</h1>
-                                <img src={element.image}></img>
+                                <h1>{element.image}</h1>
                                 <h1>{element.private}</h1>
                                 <button name={element._id}  onClick={this.grabID}>Edit</button>
                             </div>
@@ -117,7 +142,7 @@ class App extends Component
           <div className="App">
             <header className="App-header">
 
-                <Banner homelogout={this.logout} loginInfo={this.loginInfo} session={this.session}
+                <Banner homelogout={this.logout} loginInfo={this.loginInfo} session={this.session} mapHomeTweets={mapHomeTweets}
                          mapUser={mapUser} mapTweets={mapTweets} tweet_id={this.state.tweet_id} username={this.state.username} changeID={this.changeID}/>
             </header>
           </div>
