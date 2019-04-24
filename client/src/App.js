@@ -1,11 +1,7 @@
 import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
-import HomePage from "./Components/HomePage";
-import Register from "./Components/Register";
-import {BrowserRouter as Router,Route,Link,Redirect} from 'react-router-dom'
-import Search from "./Components/Search";
-import LoginFail from "./Components/LoginFail";
+
 import Banner from "./Components/Banner";
 import Edit from "./Components/Edit";
 // import "bootstrap/dist/css/bootstrap.min.css";
@@ -25,14 +21,15 @@ class App extends Component
                 // truelog:'no',  //checks
                 user:[], // puts all the userdata inside of an array
                 tweet_id:false, //holds the id of the tweet
-                hometweets:[]
+                hometweets:[],
+                isLogged:''
             }
 
     }
 
     componentDidMount=(e)=>
     {
-      fetch('/users/home/tweets')
+      fetch('/users/hometweets')
           .then (data=>data.json())
           .then(jsondata=>this.setState({hometweets:jsondata}))
     };
@@ -40,14 +37,16 @@ class App extends Component
      componentWillUnmount=(e)=> {
          this.setState({hometweets:[]});
          this.setState({user:[]});
-     }
+         this.setState({isLogged:''})
+     };
 
     session=(e)=>
     {
         if(this.state.username) {   //if there is a user looged in, call this function to fetch all of the user's data from mongo
-            fetch('/users/' + this.state.username)
+            fetch('/users/currentuser/' + this.state.username)
                 .then(data => data.json())
-                .then(jsondata => this.setState({user: jsondata}))
+                .then(jsondata => this.setState({user: jsondata})
+                )
 
         }
 
@@ -142,7 +141,7 @@ class App extends Component
           <div className="App">
             <header className="App-header">
 
-                <Banner homelogout={this.logout} loginInfo={this.loginInfo} session={this.session} mapHomeTweets={mapHomeTweets}
+                <Banner homelogout={this.logout} loginInfo={this.loginInfo} session={this.session} mapHomeTweets={mapHomeTweets} isLogged={this.state.isLogged}
                          mapUser={mapUser} mapTweets={mapTweets} tweet_id={this.state.tweet_id} username={this.state.username} changeID={this.changeID}/>
             </header>
           </div>

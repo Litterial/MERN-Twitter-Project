@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import '../App.css';
-import Edit from "./Edit";
+
 import {BrowserRouter as Router, Route,Link,Redirect} from "react-router-dom";
 
 

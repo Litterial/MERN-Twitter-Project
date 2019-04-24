@@ -3,11 +3,11 @@ import {BrowserRouter as Router,Route,Link} from 'react-router-dom'
 import '../App.css'
 export default class Register extends Component {
 
-    // constructor(props)
-    // {
-    //     super(props);
-    //     this.state={message:''}
-    // }
+    constructor(props)
+    {
+        super(props);
+        this.state={message:''}
+    }
 
 
     registerForm=(e)=>
@@ -45,7 +45,7 @@ export default class Register extends Component {
                         <input type='submit' name='submit'/>
                     </div>
                 </form>
-                {/*{this.state.message}*/}
+                {this.state.message}
             </div>
         );
     }

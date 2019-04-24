@@ -8,14 +8,14 @@ export default class Edit extends Component{
     constructor(props)
     {
         super(props);
-        this.state={editarray:[]};
+        this.state={editarray:[],mounted:false};
 
     }
 
     componentDidMount=(e)=>
     {
-        this.mounted = true;
-        if(this.mounted) {
+        this.setState({mounted:true});
+        {
             fetch('/users/mytweets/' + this.props.id)
                 .then(data => data.json())
                 .then(jsondata => this.setState({editarray: [jsondata]}))
@@ -23,7 +23,7 @@ export default class Edit extends Component{
     };
 
     componentWillUnmount=(e)=> {
-        this.mounted=false;
+        this.setState({mounted:false});
         this.setState({editarray:[]});
     };
 

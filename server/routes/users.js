@@ -36,14 +36,16 @@ var createHash = function(password){
   return bCrypt.hashSync(password, bCrypt.genSaltSync(10), null);
 };
 
-router.get('/', function(req, res, next) {
-  console.log(req.session);
-  TwitterUser.find({},(err,results)=>
-  {
-    err ? res.send(err): res.send(results)
-  })
-});
-router.get('/:user', function(req, res, next) {
+// router.get('/', function(req, res, next) {
+//   console.log(req.session);
+//   TwitterUser.find({},(err,results)=>
+//   {
+//     err ? res.send(err): res.send(results)
+//   })
+// });
+
+//test to see if this user is in database
+router.get('/currentuser/:user', function(req, res, next) {
   console.log(req.session);
   TwitterUser.find({username:req.params.user},(err,results)=>
   {
@@ -51,11 +53,12 @@ router.get('/:user', function(req, res, next) {
   })
 });
 
-router.get('/home/tweets',(req,res)=>
+//public tweets on home page
+router.get('/hometweets',(req,res)=>
 {
   TwitterUser.find({},(err,results)=>
   {
-    console.log('1st test')
+    console.log('1st test');
     if (err) res.send(err);
     else
     {
@@ -83,6 +86,7 @@ router.get('/home/tweets',(req,res)=>
   })
 })
 
+//search bar
 router.get('/search/:search',(req,res)=>
 {
   TwitterUser.find({"tweets.message":{"$regex":req.params.search,"$options":'i'}},(err,results)=>
@@ -124,7 +128,7 @@ router.post('/tweets/:user',(req,res)=>
   })
 });
 
-//find a specific tweet
+//find a specific tweet. This is used to re-populate the form to edit tweets, get grabs the tweet, put updates it
 router.route('/mytweets/:_id')
     .get((req,res)=>{
       TwitterUser.findOne({tweets:{$elemMatch:{_id:req.params._id}}},(err,results)=>
@@ -230,7 +234,7 @@ router.post('/register', passport.authenticate('signup', { failureRedirect:'/use
 
 router.get('/failregister',(req,res)=>
 {
-  res.send('User not created')
+  res.send('User already exist')
 });
 
 
@@ -261,13 +265,13 @@ router.post('/login',passport.authenticate('local',{failureRedirect:'/users/fail
     {
       console.log(req.body);
       req.session.username=req.user.username;
-      context={username:req.body.username,truelog:'no'};
+      context={username:req.body.username,truelog:''};
       res.send(context)
     });
 
 router.get('/faillogin',(req,res)=>
 {
-  context={username:false,truelog:'yes'};
+  context={username:false,truelog:'The username and password you entered did not match our records. Please double-check and try again.'};
   res.send(context)
 });
 

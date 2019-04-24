@@ -80,6 +80,7 @@ export default class Banner extends Component{
 
             <div>
                 <h1>Login</h1>
+                {this.props.isLogged}
                 <form onSubmit={this.login} >
                     <div className='i-block'>
                         <label htmlFor='username'>Username</label>
@@ -95,6 +96,7 @@ export default class Banner extends Component{
                         <input type='submit' name='submit'/>
                     </div>
                 </form>
+
 
 
                 <Router>
