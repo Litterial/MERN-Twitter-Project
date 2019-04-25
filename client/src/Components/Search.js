@@ -3,60 +3,42 @@ import '../App.css';
 
 export default class Search extends Component{
 
-    constructor(props)
-    {
-        super(props);
-        this.state={searchState:false}
-    }
+    render() {
 
-    searchBar=(e)=>
-    {
-        e.preventDefault();
-        console.log('entered');
-        fetch('/users/search/'+e.target.search.value)
-            .then(data=>data.json())
-            .then(jsondata=>this.setState({searchState:jsondata}));
-        // return <Redirect to={'/search'}/>
-    };
+        const mapSearch = this.props.search.map((element) => {
 
-    render(){
-        if(this.state.searchState)
-        {
-            var mapSearch=this.state.searchState.map((ele)=>
-            {
+
                 return(
-                    <div>
-                        <h1>{ele.username}</h1>
-                        <h1>{ele.tweets.message}</h1>
-                        <h1>{ele.tweets.image}</h1>
-                    </div>
-
-                )
-            })
-            return(
+                    <div key={element.tweets._id}>
+                        <h1>{element.username}</h1>
+                        <h1>{element.tweets.message}</h1>
+                        <h1>{element.tweets.image}</h1>
+                    </div>)}
+                    );
+        if ((this.props.search).length>0) {
+            return (
                 <div>
-                    <form  onSubmit={this.searchBar}>
-                        <label htmlFor='search'>Search</label>
-                        <input type='text' name='search' id='search'/>
-                        Results
-                        {mapSearch}
-
-                    </form>
+                    Results
+                    {mapSearch}
                 </div>
             )
         }
 
-        return(
-            <div>
-                <form  onSubmit={this.searchBar}>
-                    <label htmlFor='search'>Search</label>
-                    <input type='text' name='search' id='search'/>
 
-                </form>
+        return (
+            <div>
+                {/*<form  onSubmit={this.searchBar}>*/}
+                {/*    <label htmlFor='search'>Search</label>*/}
+                {/*    <input type='text' name='search' id='search'/>*/}
+
+                {/*</form>*/}
+                No tweets found
             </div>
 
 
         );
+
     }
+
 }
 

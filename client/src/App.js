@@ -23,7 +23,8 @@ class App extends Component
                 tweet_id:false, //holds the id of the tweet
                 hometweets:[],
                 isLogged:'',
-                // searchState:false
+                // searchFlag:false,
+                // searcharray:{}
             }
 
     }
@@ -35,16 +36,18 @@ class App extends Component
     //     console.log('entered');
     //     fetch('/users/search/'+e.target.search.value)
     //         .then(data=>data.json())
-    //         .then(jsondata=>this.setState({searchState:jsondata}));
+    //         .then(jsonData=>this.setState({searcharray:jsonData,searchFlag:true}));
     //     // return <Redirect to={'/search'}/>
     // };
 
 
     componentDidMount=(e)=>
     {
-      fetch('/users/hometweets')
-          .then (data=>data.json())
-          .then(jsondata=>this.setState({hometweets:jsondata}))
+
+            fetch('/users/hometweets')
+                .then(data => data.json())
+                .then(jsondata => this.setState({hometweets: jsondata}))
+
     };
 
      componentWillUnmount=(e)=> {
@@ -108,20 +111,20 @@ class App extends Component
         const mapHomeTweets=this.state.hometweets.map((ele)=>
         {
             return(
-                <div key={ele.tweets._id}>
-                    <h1>{ele.username}</h1>
-                    <h1>{ele.tweets.message}</h1>
-                    <h1>{ele.tweets.image}</h1>
-                    <h1>{ele.tweets.private}</h1>
+                <div className='' key={ele.tweets._id}>
+                    <div>{ele.username}</div>
+                    <div>{ele.tweets.message}</div>
+                    <div>{ele.tweets.image}</div>
+                    <div>{ele.tweets.private}</div>
                 </div>
 
             )
-        });
+        }).slice(0,5);
         const mapUser=this.state.user.map((ele)=> //maps all of the user information
         {
 
             return(
-                <div key={ele._id}>
+                <div className='centerbutton' key={ele._id}>
                 <h1>{ele.username}</h1>
                     <h1>{ele.image}</h1>
                     <h1>{ele.password}</h1>
@@ -132,21 +135,20 @@ class App extends Component
         const mapTweets= this.state.user.map((test)=>  //maps all the user's tweets. I also reversed the array so I c
         //list out the tweets in the most recent order. Here I can also set how many tweets I want to return
             {
-
                 return test.tweets.map((element,ndx)=> {
                     console.log(element._id);
                     // this.setState({tweet_id:element.id});
-                   // if(ndx===test.tweets.length-1) {
+                    {
                         return (
-                            <div key={element._id}>
+                            <div className='centerbutton' key={element._id}>
                                 <h1>{element.message}</h1>
                                 <h1>{element.image}</h1>
                                 <h1>{element.private}</h1>
                                 <button name={element._id}  onClick={this.grabID}>Edit</button>
                             </div>
                         )
-                    //}
-                }).reverse()
+                    }
+                }).slice(-5).reverse()
             });
 
 
@@ -155,8 +157,7 @@ class App extends Component
             <header className="App-header">
 
                 <Banner homelogout={this.logout} loginInfo={this.loginInfo} session={this.session} mapHomeTweets={mapHomeTweets} isLogged={this.state.isLogged}
-                         mapUser={mapUser} mapTweets={mapTweets} tweet_id={this.state.tweet_id} username={this.state.username} changeID={this.changeID} /*searchBar={this.searchBar}*/
-                         /*search={this.state.search}*//>
+                         mapUser={mapUser} mapTweets={mapTweets} tweet_id={this.state.tweet_id} username={this.state.username} changeID={this.changeID} /*searchBar={this.searchBar}*/ /*searchArray={this.state.searchArray} searchFlag={this.state.searchFlag}*//>
             </header>
           </div>
         );

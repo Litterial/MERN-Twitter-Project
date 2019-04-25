@@ -41,6 +41,10 @@ export default class Tweets extends Component
 
           // return <Edit id={this.props.tweet_id} changeID={this.props.changeID} session={this.props.session}/>
       }
+      if(this.props.search)
+      {
+          return<Redirect to='/search'/>
+      }
 
       if(this.props.username)
       {

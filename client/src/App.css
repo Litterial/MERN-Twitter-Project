@@ -54,3 +54,8 @@
   justify-content: center;
   margin-top:1%;
 }
+.centertweets
+{
+  display:flex;
+  align-content: center;
+}

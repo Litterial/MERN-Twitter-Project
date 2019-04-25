@@ -17,9 +17,6 @@ zangoose.connect(zangooseDB, { useNewUrlParser: true });
 var db = zangoose.connection;
 db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 
-
-
-
 var app = express();
 app.use(cookieParser());
 app.use(expressSession({
