@@ -30,6 +30,9 @@ export default class Banner extends Component{
         // console.log(this.props.mapped)
 
     } ;
+    componentWillMount=(e)=> {
+        this.setState({search:false})
+    }
 
     login=(e)=>
     {
@@ -55,6 +58,11 @@ export default class Banner extends Component{
         //     .then(text=>console.log(text))
 
     };
+
+    changeSearch=(e)=>
+    {
+        this.setState({search:false})
+    }
     searchBar=(e)=>
     {
         e.preventDefault();
@@ -92,7 +100,7 @@ export default class Banner extends Component{
             return(
                 <div>
                     <Navbar bg="warning" expand="lg">
-                        <Navbar.Brand href="#home">Parand</Navbar.Brand>
+                        <Navbar.Brand href="#home">Passel</Navbar.Brand>
                         <Navbar.Toggle aria-controls="basic-navbar-nav" />
                         <Navbar.Collapse id="basic-navbar-nav">
                             <Nav className="mr-auto">
@@ -124,7 +132,7 @@ export default class Banner extends Component{
                     <Router>
                     {/*{this.props.mapped2}*/}
                     <Link to='/' onClick={this.homelogout}>LogOut</Link>
-                        <Link to='/'>Home</Link>
+                        <Link to='/' onClick={this.changeSearch}>Home</Link>
                     <Link to={'/search'}>Search</Link>
                     <Link to='/register'>Register</Link>
                     <Link to={'/tweets'}>Tweets</Link>
@@ -197,7 +205,7 @@ export default class Banner extends Component{
 
 
                 <Router>
-                    <Link to={'/'}>Home</Link>
+                    <Link to={'/'} onClick={this.changeSearch}>Home</Link>
                     <Link to={'/search'}>Search</Link>
                     <Link to='/register'>Register</Link>
                     <Link to='/' onClick={this.homelogout}>LogOut</Link>

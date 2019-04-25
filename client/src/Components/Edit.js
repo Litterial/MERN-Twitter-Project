@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import '../App.css';
 import {BrowserRouter as Router,Route,Link,Redirect} from 'react-router-dom'
+import {Button, Form, FormControl} from "react-bootstrap";
 
 
 export default class Edit extends Component{
@@ -65,15 +66,34 @@ export default class Edit extends Component{
 
             return(
                 <div>
-                    <form onSubmit={this.editTweet}>
-                        <label htmlFor='message'>Message</label>
-                        <input type='text' id='message' name='message' defaultValue={ele.message}/>
-                        <label htmlFor='image'>image</label>
-                        <input type='text' id='image' name='image' defaultValue={ele.image}/>
-                        <label htmlFor='private'>Private only</label>
-                        <input type='checkbox' id='private' name='private' defaultChecked={c} />
-                        <button>Submit</button>
-                    </form>
+                    {/*<form onSubmit={this.editTweet}>*/}
+                    {/*    <label htmlFor='message'>Message</label>*/}
+                    {/*    <input type='text' id='message' name='message' defaultValue={ele.message}/>*/}
+                    {/*    <label htmlFor='image'>image</label>*/}
+                    {/*    <input type='text' id='image' name='image' defaultValue={ele.image}/>*/}
+                    {/*    <label htmlFor='private'>Private only</label>*/}
+                    {/*    <input type='checkbox' id='private' name='private' defaultChecked={c} />*/}
+                    {/*    <button>Submit</button>*/}
+                    {/*</form>*/}
+                    <Form className='addForm' onSubmit={this.editTweet} >
+                        <div>
+                            <label htmlFor='message'>Message</label>
+                            <br/>
+                            <FormControl type='text'  name='message' defaultValue={ele.message}/>
+                        </div>
+                        <div>
+                            <label htmlFor='image'>Image</label>
+                            <br/>
+                            <FormControl type='text' name='image' defaultValue={ele.image}/>
+                        </div>
+                        <div>
+                            <Form.Check type="checkbox" name='private' defaultValue={c} />
+
+                        </div>
+                        <div className={'centerbutton'}>
+                            <Button variant='light' size='lg' type='submit'>Submit</Button>
+                        </div>
+                    </Form>
                 </div>
             )});
 

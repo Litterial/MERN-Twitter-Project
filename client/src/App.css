@@ -71,9 +71,9 @@
   margin-bottom: 3%;
 
 }
-body
+html,body
 {
-  background:gray
+  background:#f1f1f1;
 }
 .divAllTweets
 {
