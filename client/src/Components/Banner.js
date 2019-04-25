@@ -81,9 +81,27 @@ export default class Banner extends Component{
                 )
             })
             .then(data=>data.json())
-            .then(jsondata=>this.setState({search:jsondata}));
+            .then(jsondata=>this.setState({search:jsondata}))
+            .then(e.target.search.value='')
         // return <Redirect to={'/search'}/>
     };
+
+    registerForm=(e)=>
+    {
+        e.preventDefault();
+        fetch('users/register',
+            {
+                method:'POST',
+                headers:
+                    {'Accept':'application/json', 'Content-Type':'application/json',},
+                body:JSON.stringify({username:e.target.username.value, password:e.target.password.value,
+                    image:e.target.image.value,background:e.target.background.value}),
+            })
+            .then(data=>data.text())
+            .then(message=>this.setState({message:message}))
+
+    };
+
 
     // searchBar=(e)=>
     // {
@@ -150,15 +168,16 @@ export default class Banner extends Component{
         return (
 
             <div>
+                <Router>
                 <Navbar bg="warning" expand="lg">
-                    <Navbar.Brand href="/">Passel</Navbar.Brand>
+                    <Navbar.Brand><Link to='/' className='noUnderline' onClick={this.changeSearch}>Passel</Link></Navbar.Brand>
                     <Navbar.Toggle aria-controls="basic-navbar-nav" />
                     <Navbar.Collapse id="basic-navbar-nav">
                         <Nav className="mr-auto">
 
                         </Nav>
                         <Form onSubmit={this.searchBar}>
-                            <FormControl type="text" placeholder="Search" name='search' className="mr-sm-2" />
+                            <FormControl type="input" placeholder="Search" name='search' className="mr-sm-2" />
                         </Form>
 
                         <NavDropdown title="Have an account? Login" id="basic-nav-dropdown">
@@ -173,14 +192,19 @@ export default class Banner extends Component{
                                     <br/>
                                     <FormControl type='password' name='password' id='password'/>
                                 </div>
+                                <br/>
                                 <div className={'centerbutton'}>
                                     <Button variant='light' size='lg' type='submit'>Submit</Button>
                                 </div>
                             </Form>
                             {/*<NavDropdown.Item href="#action/3.2">Another action</NavDropdown.Item>*/}
                             {/*<NavDropdown.Item href="#action/3.3">Something</NavDropdown.Item>*/}
-                            {/*<NavDropdown.Divider />*/}
+                            <NavDropdown.Divider />
                             {/*<NavDropdown.Item href="#action/3.4">Separated link</NavDropdown.Item>*/}
+                            {/*<Router>*/}
+                            <Button variant='light' size='lg'><Link to={'register'} className='noUnderline'>Register</Link></Button>
+
+                            {/*</Router>*/}
                         </NavDropdown>
                     </Navbar.Collapse>
                 </Navbar>
@@ -204,7 +228,7 @@ export default class Banner extends Component{
 
 
 
-                <Router>
+                {/*<Router>*/}
                     <Link to={'/'} onClick={this.changeSearch}>Home</Link>
                     <Link to={'/search'}>Search</Link>
                     <Link to='/register'>Register</Link>
@@ -213,7 +237,7 @@ export default class Banner extends Component{
                     <Route exact path={'/'} component={()=> <Tweets tweets={this.props.mapTweets} username={this.props.username} session={this.props.session} tweet_id={this.props.tweet_id} changeID={this.props.changeID} mapHomeTweets={this.props.mapHomeTweets} search={this.state.search}/> }/>
 
                     <Route  path={'/search'} component={()=><Search search={this.state.search} />}/>
-                    <Route  path={'/register'} component={()=><Register  register={this.registerForm}/>}/>
+                    <Route  path={'/register'} component={()=><Register  registerForm={this.registerForm}/>}/>
                     {/*<Route path={'/loginFail'} component={()=><LoginFail change={this.change}/>}/>*/}
                 </Router>
 

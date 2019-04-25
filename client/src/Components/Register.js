@@ -12,17 +12,18 @@ export default class Register extends Component {
 
     registerForm=(e)=>
     {
-        e.preventDefault();
-        fetch('users/register',
-            {
-                method:'POST',
-                headers:
-                    {'Accept':'application/json', 'Content-Type':'application/json',},
-                body:JSON.stringify({username:e.target.username.value, password:e.target.password.value,
-                    image:e.target.image.value,background:e.target.background.value}),
-            })
-            .then(data=>data.text())
-            .then(message=>this.setState({message:message}))
+        this.props.registerForm()
+        // e.preventDefault();
+        // fetch('users/register',
+        //     {
+        //         method:'POST',
+        //         headers:
+        //             {'Accept':'application/json', 'Content-Type':'application/json',},
+        //         body:JSON.stringify({username:e.target.username.value, password:e.target.password.value,
+        //             image:e.target.image.value,background:e.target.background.value}),
+        //     })
+        //     .then(data=>data.text())
+        //     .then(message=>this.setState({message:message}))
 
     };
 

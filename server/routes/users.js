@@ -53,6 +53,15 @@ router.get('/currentuser/:user', function(req, res, next) {
   })
 });
 
+router.get('/testSession',(req,res)=>
+{
+  console.log(res.session);
+  TwitterUser.find({username:req.session.username},(err,results)=>
+  {
+    err? res.send(err):res.send(results)
+  })
+});
+
 //public tweets on home page
 router.get('/hometweets',(req,res)=>
 {
