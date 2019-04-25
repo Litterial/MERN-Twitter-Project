@@ -107,10 +107,13 @@ export default class Banner extends Component{
                                 {/*</NavDropdown>*/}
 
                             </Nav>
-                            <Form inline>
+                            <Form onSubmit={this.searchBar}>
                                 <FormControl type="text" placeholder="Search" name='search' className="mr-sm-2" />
-                                <Button variant="outline-success">Search</Button>
                             </Form>
+                            <div>
+                            Hi{this.props.username}
+                            </div>
+                            <a href ='/'>Logout</a>
                         </Navbar.Collapse>
                     </Navbar>;
 
@@ -128,8 +131,8 @@ export default class Banner extends Component{
                         {/*<Route   exact path={'/'} component={()=> <HomePage/>}/>*/}
                         {/*{this.props.tweet_id}?(<Redirect to='/edit'/>):()*/}
                         <Route exact path={'/'} component={()=> <Tweets tweets={this.props.mapTweets} username={this.props.username} session={this.props.session} tweet_id={this.props.tweet_id} changeID={this.props.changeID} searchBar={this.searchBar}
-                                                                        searcharray={this.props.searcharray} searchFlag={this.props.searchFlag}/>}/>
-                        <Route  path={'/search'} component={()=><Search />}/>
+                                                                        search={this.state.search}/>}/>
+                        <Route  path={'/search'} component={()=><Search search={this.state.search} />}/>
                         <Route path={'/edit'} component={()=><Edit /*tweet_id={this.props.tweet_id}*/ session={this.props.session} id={this.props.tweet_id} changeID={this.props.changeID} />}/>
                         <Route  path={'/register'} component={()=><Register  register={this.registerForm}/>}/>
                     </Router>

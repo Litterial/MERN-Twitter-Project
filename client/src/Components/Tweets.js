@@ -61,14 +61,16 @@ export default class Tweets extends Component
                     <button>Submit</button>
 
                 </form>
-                <h1>{this.props.tweets}</h1>
+                <div className="divAllTweets">{this.props.tweets}</div>
             </div>
         )
       }
 
           return(
               <div>
+              <div className="divAllTweets">
           {this.props.mapHomeTweets}
+              </div>
               </div>
           )
     }

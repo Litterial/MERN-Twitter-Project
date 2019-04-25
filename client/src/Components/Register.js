@@ -18,7 +18,8 @@ export default class Register extends Component {
                 method:'POST',
                 headers:
                     {'Accept':'application/json', 'Content-Type':'application/json',},
-                body:JSON.stringify({username:e.target.username.value, password:e.target.password.value,}),
+                body:JSON.stringify({username:e.target.username.value, password:e.target.password.value,
+                    image:e.target.image.value,background:e.target.background.value}),
             })
             .then(data=>data.text())
             .then(message=>this.setState({message:message}))
@@ -41,6 +42,15 @@ export default class Register extends Component {
                         <br/>
                         <input type='password' name='password' id='password'/>
                     </div>
+                    <div className='i-block'>
+                        <label htmlFor='image'>Image url</label>
+                        <br/>
+                        <input type='text' name='image' id='image'/>
+                    </div>    <div className='i-block'>
+                    <label htmlFor='background'>BackGround url</label>
+                    <br/>
+                    <input type='text' name='background' id='background'/>
+                </div>
                     <div className='i-block'>
                         <input type='submit' name='submit'/>
                     </div>

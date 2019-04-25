@@ -4,6 +4,7 @@ import './App.css';
 
 import Banner from "./Components/Banner";
 import Edit from "./Components/Edit";
+import {Button} from "react-bootstrap";
 // import "bootstrap/dist/css/bootstrap.min.css";
 // import { DropdownButton } from 'react-bootstrap';
 // import { MenuItem } from 'react-bootstrap';
@@ -111,11 +112,11 @@ class App extends Component
         const mapHomeTweets=this.state.hometweets.map((ele)=>
         {
             return(
-                <div className='' key={ele.tweets._id}>
-                    <div>{ele.username}</div>
-                    <div>{ele.tweets.message}</div>
-                    <div>{ele.tweets.image}</div>
-                    <div>{ele.tweets.private}</div>
+                <div className='tweetbackground' key={ele.tweets._id}>
+                    <div className='centertweets'>{ele.username}</div>
+                    <div className='centertweets'>{ele.tweets.message}</div>
+                    <div className='centertweets'><img src={ele.tweets.image}/></div>
+                    <div className='centertweets'>{ele.tweets.private}</div>
                 </div>
 
             )
@@ -127,7 +128,6 @@ class App extends Component
                 <div className='centerbutton' key={ele._id}>
                 <h1>{ele.username}</h1>
                     <h1>{ele.image}</h1>
-                    <h1>{ele.password}</h1>
                     <h1>{ele.background}</h1>
                 </div>
             )
@@ -136,15 +136,23 @@ class App extends Component
         //list out the tweets in the most recent order. Here I can also set how many tweets I want to return
             {
                 return test.tweets.map((element,ndx)=> {
+                    var post='https://publicdomainvectors.org/photos/noun_project_99.png';
+                    if (element.private=='false')
+                        var post='https://shmector.com/_ph/9/755061300.jpg';
+
                     console.log(element._id);
                     // this.setState({tweet_id:element.id});
                     {
                         return (
-                            <div className='centerbutton' key={element._id}>
-                                <h1>{element.message}</h1>
-                                <h1>{element.image}</h1>
-                                <h1>{element.private}</h1>
-                                <button name={element._id}  onClick={this.grabID}>Edit</button>
+                            <div className='tweetbackgroundB' key={element._id}>
+                                <img className='small'src={post}/>
+                                <div className='centertweets'>{test.username}</div>
+                                <div className='centertweets'>{element.message}</div>
+                                <div className='centertweets'>{element.image}</div>
+
+                                <Button variant='light' size='lg' type='submit' name={element._id} onClick={this.grabID}>Edit</Button>
+
+                                {/*<button name={element._id}  onClick={this.grabID}>Edit</button>*/}
                             </div>
                         )
                     }
