@@ -74,9 +74,11 @@ export default class Tweets extends Component
                         <FormControl type='text' name='image' id='image'/>
                     </div>
                     <div>
-                        <label htmlFor='private'>Private Only?</label>
-                        <br/>
-                        <FormControl type='checkbox' name='private' id='private'/>
+                        {/*<label htmlFor='private'>Private Only?</label>*/}
+                        {/*<br/>*/}
+                        {/*<FormControl type='checkbox' name='private' id='private'/>*/}
+                        <Form.Check type="checkbox" name='private' label="Private only?" />
+
                     </div>
                     <div>
 
