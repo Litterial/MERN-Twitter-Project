@@ -37,3 +37,20 @@
   display:inline-block;
   margin-right: 10px;
 }
+
+.log-in
+{
+  text-decoration-line: underline;
+}
+
+.green
+{
+  background:springgreen;
+}
+
+.centerbutton
+{
+  display:flex;
+  justify-content: center;
+  margin-top:1%;
+}

@@ -22,10 +22,23 @@ class App extends Component
                 user:[], // puts all the userdata inside of an array
                 tweet_id:false, //holds the id of the tweet
                 hometweets:[],
-                isLogged:''
+                isLogged:'',
+                // searchState:false
             }
 
     }
+
+
+    // searchBar=(e)=>
+    // {
+    //     e.preventDefault();
+    //     console.log('entered');
+    //     fetch('/users/search/'+e.target.search.value)
+    //         .then(data=>data.json())
+    //         .then(jsondata=>this.setState({searchState:jsondata}));
+    //     // return <Redirect to={'/search'}/>
+    // };
+
 
     componentDidMount=(e)=>
     {
@@ -142,7 +155,8 @@ class App extends Component
             <header className="App-header">
 
                 <Banner homelogout={this.logout} loginInfo={this.loginInfo} session={this.session} mapHomeTweets={mapHomeTweets} isLogged={this.state.isLogged}
-                         mapUser={mapUser} mapTweets={mapTweets} tweet_id={this.state.tweet_id} username={this.state.username} changeID={this.changeID}/>
+                         mapUser={mapUser} mapTweets={mapTweets} tweet_id={this.state.tweet_id} username={this.state.username} changeID={this.changeID} /*searchBar={this.searchBar}*/
+                         /*search={this.state.search}*//>
             </header>
           </div>
         );
