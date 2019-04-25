@@ -127,8 +127,8 @@ class App extends Component
             return(
                 <div className='centerbutton' key={ele._id}>
                 <h1>{ele.username}</h1>
-                    <h1>{ele.image}</h1>
-                    <h1>{ele.background}</h1>
+                    <img src={ele.image}/>
+                    <img src={ele.background}/>
                 </div>
             )
         });
