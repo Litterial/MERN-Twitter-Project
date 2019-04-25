@@ -87,3 +87,12 @@ body
   background:#ffc107;
 
 }
+
+.addForm
+{
+  width: 65%;
+  background: #ffc107;
+  margin-left: 16.5%;
+  margin-bottom: 3%;
+  border-radius: 23px;
+}

@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import '../App.css';
 
 import {BrowserRouter as Router, Route,Link,Redirect} from "react-router-dom";
+import {Button, Form, FormControl} from "react-bootstrap";
 
 
 export default class Tweets extends Component
@@ -50,17 +51,42 @@ export default class Tweets extends Component
       {
         return(
             <div>
-                <form onSubmit={this.addTweet}>
-                    <label htmlFor='message'>Message</label>
-                    <input type='text' id='message' name='message'/>
-                    <label htmlFor='image'>image</label>
-                    <input type='text' id='image' name='image'/>
-                    <label htmlFor='private'>Private only</label>
-                    <input type='checkbox' id='private' name='private'/>
-                    <input type='hidden' name='date' value={Date.now()}/>
-                    <button>Submit</button>
+                {/*<form onSubmit={this.addTweet}>*/}
+                {/*    <label htmlFor='message'>Message</label>*/}
+                {/*    <input type='text' id='message' name='message'/>*/}
+                {/*    <label htmlFor='image'>image</label>*/}
+                {/*    <input type='text' id='image' name='image'/>*/}
+                {/*    <label htmlFor='private'>Private only</label>*/}
+                {/*    <input type='checkbox' id='private' name='private'/>*/}
+                {/*    <input type='hidden' name='date' value={Date.now()}/>*/}
+                {/*    <button>Submit</button>*/}
 
-                </form>
+                {/*</form>*/}
+                <Form className='addForm' onSubmit={this.addTweet} >
+                    <div>
+                        <label htmlFor='message'>Message</label>
+                        <br/>
+                        <FormControl type='text' placeholder="What's happening? " name='message' id='message'/>
+                    </div>
+                    <div>
+                        <label htmlFor='image'>Image</label>
+                        <br/>
+                        <FormControl type='text' name='image' id='image'/>
+                    </div>
+                    <div>
+                        <label htmlFor='private'>Private Only?</label>
+                        <br/>
+                        <FormControl type='checkbox' name='private' id='private'/>
+                    </div>
+                    <div>
+
+                        <FormControl type='hidden' name='date' value={Date.now()}/>
+                    </div>
+
+                    <div className={'centerbutton'}>
+                        <Button variant='light' size='lg' type='submit'>Submit</Button>
+                    </div>
+                </Form>
                 <div className="divAllTweets">{this.props.tweets}</div>
             </div>
         )

@@ -148,7 +148,7 @@ class App extends Component
                                 <img className='small'src={post}/>
                                 <div className='centertweets'>{test.username}</div>
                                 <div className='centertweets'>{element.message}</div>
-                                <div className='centertweets'>{element.image}</div>
+                                <div className='centertweets'><img src={element.image}/></div>
 
                                 <Button variant='light' size='lg' type='submit' name={element._id} onClick={this.grabID}>Edit</Button>
 
