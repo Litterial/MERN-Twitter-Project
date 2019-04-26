@@ -31,7 +31,7 @@ class App extends Component
             .then(data => data.json())
             .then(jsondata => this.setState({hometweets: jsondata}))
 
-    }
+    };
 
     componentDidMount=(e)=>
     {
@@ -123,12 +123,19 @@ class App extends Component
         }).slice(0,5);
         const mapUser=this.state.user.map((ele)=> //maps all of the user information
         {
-
+               var backgroundImage=ele.background;
+               var background={
+                   backgroundImage:`url(${backgroundImage})`,
+                   marginBottom: '6%',
+                   textAlign: 'center',
+                   height:'10%',
+                   width:'100%'
+               };
             return(
-                <div className='centerbutton' key={ele._id}>
+                <div  style={background} key={ele._id}>
                 <h1>{ele.username}</h1>
-                    <img src={ele.image}/>
-                    <img src={ele.background}/>
+                    <div><img className='profileimage' src={ele.image}/></div>
+                    {/*<div> <img src={ele.background}/></div>*/}
                 </div>
             )
         });
