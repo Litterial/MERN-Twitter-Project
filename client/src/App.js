@@ -24,6 +24,7 @@ class App extends Component
                 tweet_id:false, //holds the id of the tweet
                 hometweets:[],
                 isLogged:'',
+
                 // searchFlag:false,
                 // searcharray:{}
             }
@@ -101,6 +102,7 @@ class App extends Component
       this.session();
 
     };
+
 
 
     render()

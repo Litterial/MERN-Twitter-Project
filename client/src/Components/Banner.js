@@ -22,7 +22,8 @@ export default class Banner extends Component{
 
     constructor(props) {
         super(props);
-        this.state=({search:false})
+        this.state=({search:false,
+        message:''})
     }
 
     componentDidMount=(e)=>
@@ -32,7 +33,7 @@ export default class Banner extends Component{
     } ;
     componentWillMount=(e)=> {
         this.setState({search:false})
-    }
+    };
 
     login=(e)=>
     {
@@ -62,7 +63,7 @@ export default class Banner extends Component{
     changeSearch=(e)=>
     {
         this.setState({search:false})
-    }
+    };
     searchBar=(e)=>
     {
         e.preventDefault();
@@ -85,16 +86,37 @@ export default class Banner extends Component{
         // return <Redirect to={'/search'}/>
     };
 
+    registerForm=(e)=>
+    {
+        e.preventDefault();
+        fetch('users/register',
+            {
+                method:'POST',
+                headers:
+                    {'Accept':'application/json', 'Content-Type':'application/json',},
+                body:JSON.stringify({username:e.target.username.value, password:e.target.password.value,
+                    image:e.target.image.value,background:e.target.background.value}),
+            })
+            .then(data=>data.text())
+            .then(message=>this.setState({message:message}))
+
+    };
+
     // searchBar=(e)=>
     // {
     //     console.log('Banner search')
     //     this.props.searchBar();
     // };
+    clickRegister=(e)=>
+    {
+        console.log('clicked register')
+    }
 
 
     render() {
         if(this.props.username)
         {
+            console.log('ON user')
             // console.log(this.props.mapUser);
             // console.log(this.props.mapTweets);
             return(
@@ -142,11 +164,12 @@ export default class Banner extends Component{
                                                                         search={this.state.search}/>}/>
                         <Route  path={'/search'} component={()=><Search search={this.state.search} />}/>
                         <Route path={'/edit'} component={()=><Edit /*tweet_id={this.props.tweet_id}*/ session={this.props.session} id={this.props.tweet_id} changeID={this.props.changeID} />}/>
-                        <Route  path={'/register'} component={()=><Register  register={this.registerForm}/>}/>
+                        <Route  path={'/register'} component={()=><Register  registerForm={this.registerForm}/>}/>
                     </Router>
                 </div>
             )
         }
+        console.log('On logout')
         return (
 
             <div>
@@ -181,6 +204,9 @@ export default class Banner extends Component{
                             {/*<NavDropdown.Item href="#action/3.3">Something</NavDropdown.Item>*/}
                             {/*<NavDropdown.Divider />*/}
                             {/*<NavDropdown.Item href="#action/3.4">Separated link</NavDropdown.Item>*/}
+                            <Router>
+                            <a href='/register'>Register</a>
+                            </Router>
                         </NavDropdown>
                     </Navbar.Collapse>
                 </Navbar>
@@ -206,14 +232,14 @@ export default class Banner extends Component{
 
                 <Router>
                     <Link to={'/'} onClick={this.changeSearch}>Home</Link>
-                    <Link to={'/search'}>Search</Link>
-                    <Link to='/register'>Register</Link>
+                    {/*<Link to={'/search'}>Search</Link>*/}
+                    {/*<Link to='/register'>Register</Link>*/}
                     <Link to='/' onClick={this.homelogout}>LogOut</Link>
                     {/*<Route  exact path={'/'} component={()=> <HomePage/>}/>*/}
                     <Route exact path={'/'} component={()=> <Tweets tweets={this.props.mapTweets} username={this.props.username} session={this.props.session} tweet_id={this.props.tweet_id} changeID={this.props.changeID} mapHomeTweets={this.props.mapHomeTweets} search={this.state.search}/> }/>
 
                     <Route  path={'/search'} component={()=><Search search={this.state.search} />}/>
-                    <Route  path={'/register'} component={()=><Register  register={this.registerForm}/>}/>
+                    <Route  path={'/register'} component={()=><Register  registerForm={this.registerForm}/>}/>
                     {/*<Route path={'/loginFail'} component={()=><LoginFail change={this.change}/>}/>*/}
                 </Router>
 

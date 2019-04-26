@@ -3,30 +3,33 @@ import {BrowserRouter as Router,Route,Link} from 'react-router-dom'
 import '../App.css'
 export default class Register extends Component {
 
-    constructor(props)
-    {
-        super(props);
-        this.state={message:''}
-    }
-
+    // constructor(props)
+    // {
+    //     super(props);
+    //     this.state={message:''}
+    // }
+    //
 
     registerForm=(e)=>
     {
-        e.preventDefault();
-        fetch('users/register',
-            {
-                method:'POST',
-                headers:
-                    {'Accept':'application/json', 'Content-Type':'application/json',},
-                body:JSON.stringify({username:e.target.username.value, password:e.target.password.value,
-                    image:e.target.image.value,background:e.target.background.value}),
-            })
-            .then(data=>data.text())
-            .then(message=>this.setState({message:message}))
+        console.log('hi');
+        this.props.registerForm();
+        // e.preventDefault();
+        // fetch('users/register',
+        //     {
+        //         method:'POST',
+        //         headers:
+        //             {'Accept':'application/json', 'Content-Type':'application/json',},
+        //         body:JSON.stringify({username:e.target.username.value, password:e.target.password.value,
+        //             image:e.target.image.value,background:e.target.background.value}),
+        //     })
+        //     .then(data=>data.text())
+        //     .then(message=>this.setState({message:message}))
 
     };
 
     render() {
+        console.log('on register')
         return (
 
             <div>
@@ -55,7 +58,7 @@ export default class Register extends Component {
                         <input type='submit' name='submit'/>
                     </div>
                 </form>
-                {this.state.message}
+                {this.props.message}
             </div>
         );
     }
