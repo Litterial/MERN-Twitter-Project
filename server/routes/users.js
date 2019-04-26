@@ -105,7 +105,7 @@ router.post('/search/',(req,res)=>
    {
      var tweetarray=[];
      var bodystring=req.body.search;
-     console.log((results).length);
+     // console.log((results).length);
      for(x=0; x<(results).length;x++)
      {
        console.log((results[x].tweets).length);
@@ -115,12 +115,12 @@ router.post('/search/',(req,res)=>
          if((results[x].tweets[y].message).toLowerCase().includes(bodystring.toLowerCase()) && results[x].tweets[y].private==="false" )
          {
            tweetarray.push({"username":results[x].username,"tweets":results[x].tweets[y]})
-           console.log(tweetarray)
+           // console.log(tweetarray)
          }
        }
      }
-     console.log('_________________________________________________________')
-     console.log(tweetarray)
+     // console.log('_________________________________________________________')
+     // console.log(tweetarray)
      res.send(tweetarray)
    }
 
@@ -134,7 +134,7 @@ router.post('/tweets/:user',(req,res)=>
 {
   TwitterUser.findOneAndUpdate({username:req.params.user},{$push:{tweets:{message:req.body.message,image:req.body.image,private:req.body.private,date:req.body.date,_id:new tweetID()}}},(err,results)=>
   {
-    console.log(req.body);
+    // console.log(req.body);
     err ? res.send(err):res.send('added')
   })
 });
@@ -159,8 +159,8 @@ router.route('/mytweets/:_id')
 
     .put((req,res)=>
     {
-      console.log(req.params._id);
-      console.log(req.body);
+      // console.log(req.params._id);
+      // console.log(req.body);
 
       TwitterUser.findOneAndUpdate({tweets:{$elemMatch:{_id:req.params._id}}},
           {"$set":{'tweets.$.message':req.body.message,'tweets.$.image':req.body.image,'tweets.$.private':req.body.private}},(err,results)=>
@@ -274,7 +274,7 @@ passport.use(new LocalStrategy(
 router.post('/login',passport.authenticate('local',{failureRedirect:'/users/faillogin'}),
     (req,res)=>
     {
-      console.log(req.body);
+      // console.log(req.body);
       req.session.username=req.user.username;
       context={username:req.body.username,truelog:''};
       res.send(context)

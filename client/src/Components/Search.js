@@ -9,16 +9,16 @@ export default class Search extends Component{
 
 
                 return(
-                    <div key={element.tweets._id}>
+                    <div className='resultsElements'key={element.tweets._id}>
                         <h1>{element.username}</h1>
                         <h1>{element.tweets.message}</h1>
-                        <h1>{element.tweets.image}</h1>
+                        <img className='resizeimage' src={element.tweets.image}/>
                     </div>)}
                     );
         if ((this.props.search).length>0) {
             return (
-                <div>
-                    Results
+                <div className='centerResults'>
+                    <h1>Results</h1>
                     {mapSearch}
                 </div>
             )

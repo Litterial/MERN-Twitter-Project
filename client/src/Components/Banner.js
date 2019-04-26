@@ -88,7 +88,9 @@ export default class Banner extends Component{
 
     registerForm=(e)=>
     {
+
         e.preventDefault();
+        console.log('Did it run');
         fetch('users/register',
             {
                 method:'POST',
@@ -121,9 +123,10 @@ export default class Banner extends Component{
             // console.log(this.props.mapUser);
             // console.log(this.props.mapTweets);
             return(
+                <Router>
                 <div>
                     <Navbar bg="warning" expand="lg">
-                        <Navbar.Brand href="#home">Passel</Navbar.Brand>
+                        <Navbar.Brand><Link to='/' className='noUnderline'>Passel</Link></Navbar.Brand>
                         <Navbar.Toggle aria-controls="basic-navbar-nav" />
                         <Navbar.Collapse id="basic-navbar-nav">
                             <Nav className="mr-auto">
@@ -141,33 +144,31 @@ export default class Banner extends Component{
                             <Form onSubmit={this.searchBar}>
                                 <FormControl type="text" placeholder="Search" name='search' className="mr-sm-2" />
                             </Form>
-                            <div>
-                            Hi{this.props.username}
+                            <div className ='padNavbar'>
+                            Hi {this.props.username}
                             </div>
-                            <a href ='/'>Logout</a>
+                            <Link to='/' className ='padNavbar' onClick={this.homelogout}>Logout</Link>
                         </Navbar.Collapse>
-                    </Navbar>;
-
-
+                    </Navbar>
 
                     {this.props.mapUser}
-                    <h1>First Test</h1>
-                    <Router>
-                    {/*{this.props.mapped2}*/}
-                    <Link to='/' onClick={this.homelogout}>LogOut</Link>
-                        <Link to='/' onClick={this.changeSearch}>Home</Link>
-                    <Link to={'/search'}>Search</Link>
-                    <Link to='/register'>Register</Link>
-                    <Link to={'/tweets'}>Tweets</Link>
+                    {/*<h1>First Test</h1>*/}
+                    {/*/!*{this.props.mapped2}*!/*/}
+                    {/*<Link to='/' onClick={this.homelogout}>LogOut</Link>*/}
+                    {/*    <Link to='/' onClick={this.changeSearch}>Home</Link>*/}
+                    {/*<Link to={'/search'}>Search</Link>*/}
+                    {/*<Link to='/register'>Register</Link>*/}
+                    {/*<Link to={'/tweets'}>Tweets</Link>*/}
                         {/*<Route   exact path={'/'} component={()=> <HomePage/>}/>*/}
                         {/*{this.props.tweet_id}?(<Redirect to='/edit'/>):()*/}
                         <Route exact path={'/'} component={()=> <Tweets tweets={this.props.mapTweets} username={this.props.username} session={this.props.session} tweet_id={this.props.tweet_id} changeID={this.props.changeID} searchBar={this.searchBar}
                                                                         search={this.state.search}/>}/>
                         <Route  path={'/search'} component={()=><Search search={this.state.search} />}/>
-                        <Route path={'/edit'} component={()=><Edit /*tweet_id={this.props.tweet_id}*/ session={this.props.session} id={this.props.tweet_id} changeID={this.props.changeID} />}/>
+                        <Route path={'/edit'} component={()=><Edit  session={this.props.session} id={this.props.tweet_id} changeID={this.props.changeID} />}/>
                         <Route  path={'/register'} component={()=><Register  registerForm={this.registerForm}/>}/>
-                    </Router>
+
                 </div>
+                </Router>
             )
         }
         console.log('On logout')
@@ -209,36 +210,36 @@ export default class Banner extends Component{
                             {/*<NavDropdown.Item href="#action/3.4">Separated link</NavDropdown.Item>*/}
 
                             {/*<Router>*/}
-                            <Button variant='light' size='lg'><Link to={'register'} onClick={this.clickRegister} className='noUnderline'>Register</Link></Button>
+                            <Button variant='light' size='lg' className='registerButton'><Link to={'register'} onClick={this.clickRegister} className='noUnderline'>Register</Link></Button>
 
                         </NavDropdown>
                     </Navbar.Collapse>
                 </Navbar>
-                <h1>Login</h1>
-                {this.props.isLogged}
-                <form onSubmit={this.login} >
-                    <div className='i-block'>
-                        <label htmlFor='username'>Username</label>
-                        <br/>
-                        <input type='text' name='username' id='username'/>
-                    </div>
-                    <div className='i-block'>
-                        <label htmlFor='password'>Password</label>
-                        <br/>
-                        <input type='password' name='password' id='password'/>
-                    </div>
-                    <div className='i-block'>
-                        <input type='submit' name='submit'/>
-                    </div>
-                </form>
+                {/*<h1>Login</h1>*/}
+                {/*{this.props.isLogged}*/}
+                {/*<form onSubmit={this.login} >*/}
+                {/*    <div className='i-block'>*/}
+                {/*        <label htmlFor='username'>Username</label>*/}
+                {/*        <br/>*/}
+                {/*        <input type='text' name='username' id='username'/>*/}
+                {/*    </div>*/}
+                {/*    <div className='i-block'>*/}
+                {/*        <label htmlFor='password'>Password</label>*/}
+                {/*        <br/>*/}
+                {/*        <input type='password' name='password' id='password'/>*/}
+                {/*    </div>*/}
+                {/*    <div className='i-block'>*/}
+                {/*        <input type='submit' name='submit'/>*/}
+                {/*    </div>*/}
+                {/*</form>*/}
 
 
 
                 {/*<Router>*/}
-                    <Link to={'/'} onClick={this.changeSearch}>Home</Link>
-                    {/*<Link to={'/search'}>Search</Link>*/}
-                    {/*<Link to='/register'>Register</Link>*/}
-                    <Link to='/' onClick={this.homelogout}>LogOut</Link>
+                {/*    <Link to={'/'} onClick={this.changeSearch}>Home</Link>*/}
+                {/*    /!*<Link to={'/search'}>Search</Link>*!/*/}
+                {/*    /!*<Link to='/register'>Register</Link>*!/*/}
+                {/*    <Link to='/' onClick={this.homelogout}>LogOut</Link>*/}
                     {/*<Route  exact path={'/'} component={()=> <HomePage/>}/>*/}
                     <Route exact path={'/'} component={()=> <Tweets tweets={this.props.mapTweets} username={this.props.username} session={this.props.session} tweet_id={this.props.tweet_id} changeID={this.props.changeID} mapHomeTweets={this.props.mapHomeTweets} search={this.state.search}/> }/>
 

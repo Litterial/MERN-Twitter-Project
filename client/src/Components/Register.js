@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import {BrowserRouter as Router,Route,Link,Redirect} from 'react-router-dom'
 import '../App.css'
+import {Button, Form, FormControl, NavDropdown} from "react-bootstrap";
 export default class Register extends Component {
 
     // constructor(props)
@@ -8,12 +9,12 @@ export default class Register extends Component {
     //     super(props);
     //     this.state={message:''}
     // }
-    //
 
-    registerForm=(e)=>
+
+    registerForm=(k)=>
     {
 
-        this.props.registerForm()
+        this.props.registerForm(k)
 
         // e.preventDefault();
         // fetch('users/register',
@@ -30,8 +31,8 @@ export default class Register extends Component {
     };
 
     render() {
-        console.log('on register')
-        console.log(this.props.search)
+        console.log('on register');
+        console.log(this.props.search);
 
         if(this.props.search)
         {
@@ -40,32 +41,62 @@ export default class Register extends Component {
 
         return (
 
-            <div>
-                <h1>Register</h1>
-                <form onSubmit={this.registerForm} >
-                    <div className='i-block'>
+            <div className='registrationFormDiv'>
+                {/*<h1>Register</h1>*/}
+                {/*<form onSubmit={this.registerForm} >*/}
+                {/*    <div className='i-block'>*/}
+                {/*        <label htmlFor='username'>Username</label>*/}
+                {/*        <br/>*/}
+                {/*        <input type='text' name='username' id='username'/>*/}
+                {/*    </div>*/}
+                {/*    <div className='i-block'>*/}
+                {/*        <label htmlFor='password'>Password</label>*/}
+                {/*        <br/>*/}
+                {/*        <input type='password' name='password' id='password'/>*/}
+                {/*    </div>*/}
+                {/*    <div className='i-block'>*/}
+                {/*        <label htmlFor='image'>Image url</label>*/}
+                {/*        <br/>*/}
+                {/*        <input type='text' name='image' id='image'/>*/}
+                {/*    </div>    <div className='i-block'>*/}
+                {/*    <label htmlFor='background'>Background url</label>*/}
+                {/*    <br/>*/}
+                {/*    <input type='text' name='background' id='background'/>*/}
+                {/*</div>*/}
+                {/*    <div className='i-block'>*/}
+                {/*        <input type='submit' name='submit'/>*/}
+                {/*    </div>*/}
+                {/*</form>*/}
+
+
+                <Form  className='registrationForm' onSubmit={this.registerForm} >
+                    <div>
                         <label htmlFor='username'>Username</label>
                         <br/>
-                        <input type='text' name='username' id='username'/>
+                        <FormControl type='text' name='username' id='username'/>
                     </div>
-                    <div className='i-block'>
+                    <div>
                         <label htmlFor='password'>Password</label>
                         <br/>
-                        <input type='password' name='password' id='password'/>
+                        <FormControl type='password' name='password' id='password'/>
                     </div>
-                    <div className='i-block'>
+                    <br/>
+                    <div>
                         <label htmlFor='image'>Image url</label>
                         <br/>
-                        <input type='text' name='image' id='image'/>
-                    </div>    <div className='i-block'>
-                    <label htmlFor='background'>BackGround url</label>
-                    <br/>
-                    <input type='text' name='background' id='background'/>
-                </div>
-                    <div className='i-block'>
-                        <input type='submit' name='submit'/>
+                        <FormControl type='text' name='image' id='image'/>
                     </div>
-                </form>
+                    <br/>
+                    <div>
+                        <label htmlFor='background'>Background url</label>
+                        <br/>
+                        <FormControl type='text' name='background' id='background'/>
+                    </div>
+                    <br/>
+                    <div className={'centerbutton'}>
+                        <Button variant='light' size='lg' type='submit'>Submit</Button>
+                    </div>
+                </Form>
                 {this.props.message}
             </div>
         );

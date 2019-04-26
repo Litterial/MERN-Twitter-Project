@@ -15,6 +15,7 @@ export default class Edit extends Component{
 
     componentDidMount=(e)=>
     {
+
         this.setState({mounted:true});
         {
             fetch('/users/mytweets/' + this.props.id)
@@ -26,6 +27,7 @@ export default class Edit extends Component{
     componentWillUnmount=(e)=> {
         this.setState({mounted:false});
         this.setState({editarray:[]});
+        this.props.changeID()
     };
 
     editTweet=(e)=>
