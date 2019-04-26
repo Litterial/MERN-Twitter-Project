@@ -40,7 +40,7 @@ export default class Register extends Component {
         }
 
         return (
-
+<div>
             <div className='registrationFormDiv'>
                 {/*<h1>Register</h1>*/}
                 {/*<form onSubmit={this.registerForm} >*/}
@@ -97,8 +97,10 @@ export default class Register extends Component {
                         <Button variant='light' size='lg' type='submit'>Submit</Button>
                     </div>
                 </Form>
-                {this.props.message}
+
             </div>
+    <h1>{this.props.message}</h1>
+</div>
         );
     }
 }

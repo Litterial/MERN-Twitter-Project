@@ -244,7 +244,7 @@ export default class Banner extends Component{
                     <Route exact path={'/'} component={()=> <Tweets tweets={this.props.mapTweets} username={this.props.username} session={this.props.session} tweet_id={this.props.tweet_id} changeID={this.props.changeID} mapHomeTweets={this.props.mapHomeTweets} search={this.state.search}/> }/>
 
                     <Route  path={'/search'} component={()=><Search search={this.state.search} />}/>
-                    <Route  path={'/register'} component={()=><Register  search={this.state.search} registerForm={this.registerForm}/>}/>
+                    <Route  path={'/register'} component={()=><Register  search={this.state.search} registerForm={this.registerForm} message={this.state.message}/>}/>
                     {/*<Route path={'/loginFail'} component={()=><LoginFail change={this.change}/>}/>*/}
                 </Router>
 

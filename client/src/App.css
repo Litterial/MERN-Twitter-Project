@@ -170,3 +170,9 @@ html,body
   max-height: 200px;
   border-radius: 50%;
 }
+
+
+.navigationBar
+{
+  position:fixed;
+}
