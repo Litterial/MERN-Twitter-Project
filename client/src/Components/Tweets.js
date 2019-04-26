@@ -44,6 +44,7 @@ export default class Tweets extends Component
       }
       if(this.props.search)
       {
+          console.log('hit search')
           return<Redirect to='/search'/>
       }
 

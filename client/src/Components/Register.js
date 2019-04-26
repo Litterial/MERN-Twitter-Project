@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {BrowserRouter as Router,Route,Link} from 'react-router-dom'
+import {BrowserRouter as Router,Route,Link,Redirect} from 'react-router-dom'
 import '../App.css'
 export default class Register extends Component {
 
@@ -31,6 +31,13 @@ export default class Register extends Component {
 
     render() {
         console.log('on register')
+        console.log(this.props.search)
+
+        if(this.props.search)
+        {
+            return<Redirect to={'/search'}/>
+        }
+
         return (
 
             <div>

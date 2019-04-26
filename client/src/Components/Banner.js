@@ -31,9 +31,9 @@ export default class Banner extends Component{
         // console.log(this.props.mapped)
 
     } ;
-    componentWillMount=(e)=> {
-        this.setState({search:false})
-    };
+    // componentWillMount=(e)=> {
+    //     this.setState({search:false})
+    // };
 
     login=(e)=>
     {
@@ -84,7 +84,6 @@ export default class Banner extends Component{
             .then(data=>data.json())
             .then(jsondata=>this.setState({search:jsondata}))
             .then(e.target.search.value='')
-        // return <Redirect to={'/search'}/>
     };
 
     registerForm=(e)=>
@@ -108,10 +107,11 @@ export default class Banner extends Component{
     //     console.log('Banner search')
     //     this.props.searchBar();
     // };
+
     clickRegister=(e)=>
     {
-        console.log('clicked register')
-    }
+        this.setState({search:false})
+    };
 
 
     render() {
@@ -209,7 +209,7 @@ export default class Banner extends Component{
                             {/*<NavDropdown.Item href="#action/3.4">Separated link</NavDropdown.Item>*/}
 
                             {/*<Router>*/}
-                            <Button variant='light' size='lg'><Link to={'register'} className='noUnderline'>Register</Link></Button>
+                            <Button variant='light' size='lg'><Link to={'register'} onClick={this.clickRegister} className='noUnderline'>Register</Link></Button>
 
                         </NavDropdown>
                     </Navbar.Collapse>
@@ -243,7 +243,7 @@ export default class Banner extends Component{
                     <Route exact path={'/'} component={()=> <Tweets tweets={this.props.mapTweets} username={this.props.username} session={this.props.session} tweet_id={this.props.tweet_id} changeID={this.props.changeID} mapHomeTweets={this.props.mapHomeTweets} search={this.state.search}/> }/>
 
                     <Route  path={'/search'} component={()=><Search search={this.state.search} />}/>
-                    <Route  path={'/register'} component={()=><Register  registerForm={this.registerForm}/>}/>
+                    <Route  path={'/register'} component={()=><Register  search={this.state.search} registerForm={this.registerForm}/>}/>
                     {/*<Route path={'/loginFail'} component={()=><LoginFail change={this.change}/>}/>*/}
                 </Router>
 
