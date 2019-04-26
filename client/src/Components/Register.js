@@ -12,8 +12,9 @@ export default class Register extends Component {
 
     registerForm=(e)=>
     {
-        console.log('hi');
-        this.props.registerForm();
+
+        this.props.registerForm()
+
         // e.preventDefault();
         // fetch('users/register',
         //     {

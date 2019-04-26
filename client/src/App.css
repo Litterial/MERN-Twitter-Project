@@ -96,3 +96,13 @@ html,body
   margin-bottom: 3%;
   border-radius: 23px;
 }
+
+.noUnderline {
+  text-decoration-line: none;
+  color: black;
+}
+.noUnderline:hover
+{
+  text-decoration-line: none;
+  color: black;
+}

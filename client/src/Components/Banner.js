@@ -82,7 +82,8 @@ export default class Banner extends Component{
                 )
             })
             .then(data=>data.json())
-            .then(jsondata=>this.setState({search:jsondata}));
+            .then(jsondata=>this.setState({search:jsondata}))
+            .then(e.target.search.value='')
         // return <Redirect to={'/search'}/>
     };
 
@@ -173,15 +174,16 @@ export default class Banner extends Component{
         return (
 
             <div>
+                <Router>
                 <Navbar bg="warning" expand="lg">
-                    <Navbar.Brand href="/">Passel</Navbar.Brand>
+                    <Navbar.Brand><Link to='/' className='noUnderline' onClick={this.changeSearch}>Passel</Link></Navbar.Brand>
                     <Navbar.Toggle aria-controls="basic-navbar-nav" />
                     <Navbar.Collapse id="basic-navbar-nav">
                         <Nav className="mr-auto">
 
                         </Nav>
                         <Form onSubmit={this.searchBar}>
-                            <FormControl type="text" placeholder="Search" name='search' className="mr-sm-2" />
+                            <FormControl type="input" placeholder="Search" name='search' className="mr-sm-2" />
                         </Form>
 
                         <NavDropdown title="Have an account? Login" id="basic-nav-dropdown">
@@ -196,17 +198,19 @@ export default class Banner extends Component{
                                     <br/>
                                     <FormControl type='password' name='password' id='password'/>
                                 </div>
+                                <br/>
                                 <div className={'centerbutton'}>
                                     <Button variant='light' size='lg' type='submit'>Submit</Button>
                                 </div>
                             </Form>
                             {/*<NavDropdown.Item href="#action/3.2">Another action</NavDropdown.Item>*/}
                             {/*<NavDropdown.Item href="#action/3.3">Something</NavDropdown.Item>*/}
-                            {/*<NavDropdown.Divider />*/}
+                            <NavDropdown.Divider />
                             {/*<NavDropdown.Item href="#action/3.4">Separated link</NavDropdown.Item>*/}
-                            <Router>
-                            <a href='/register'>Register</a>
-                            </Router>
+
+                            {/*<Router>*/}
+                            <Button variant='light' size='lg'><Link to={'register'} className='noUnderline'>Register</Link></Button>
+
                         </NavDropdown>
                     </Navbar.Collapse>
                 </Navbar>
@@ -230,7 +234,7 @@ export default class Banner extends Component{
 
 
 
-                <Router>
+                {/*<Router>*/}
                     <Link to={'/'} onClick={this.changeSearch}>Home</Link>
                     {/*<Link to={'/search'}>Search</Link>*/}
                     {/*<Link to='/register'>Register</Link>*/}
