@@ -47,55 +47,55 @@ export default class Tweets extends Component
           console.log('hit search')
           return<Redirect to='/search'/>
       }
-
-      if(this.props.username)
-      {
-        return(
-            <div>
-                {/*<form onSubmit={this.addTweet}>*/}
-                {/*    <label htmlFor='message'>Message</label>*/}
-                {/*    <input type='text' id='message' name='message'/>*/}
-                {/*    <label htmlFor='image'>image</label>*/}
-                {/*    <input type='text' id='image' name='image'/>*/}
-                {/*    <label htmlFor='private'>Private only</label>*/}
-                {/*    <input type='checkbox' id='private' name='private'/>*/}
-                {/*    <input type='hidden' name='date' value={Date.now()}/>*/}
-                {/*    <button>Submit</button>*/}
-
-                {/*</form>*/}
-                <Form className='addForm' onSubmit={this.addTweet} >
-                    <div>
-                        <label htmlFor='message'>Message</label>
-                        <br/>
-                        <FormControl type='text' placeholder="What's happening? " name='message' id='message'/>
-                    </div>
-                    <div>
-                        <label htmlFor='image'>Image</label>
-                        <br/>
-                        <FormControl type='text' name='image' id='image'/>
-                    </div>
-                    <div>
-                        <Form.Check type="checkbox" name='private' label="Private only?" />
-
-                    </div>
-                    <div>
-
-                        <FormControl type='hidden' name='date' value={Date.now()}/>
-                    </div>
-
-                    <div className={'centerbutton'}>
-                        <Button variant='light' size='lg' type='submit'>Submit</Button>
-                    </div>
-                </Form>
-                <div className="divAllTweets">{this.props.tweets}</div>
-            </div>
-        )
-      }
+      //
+      // if(this.props.username)
+      // {
+      //   return(
+      //       <div>
+      //           {/*<form onSubmit={this.addTweet}>*/}
+      //           {/*    <label htmlFor='message'>Message</label>*/}
+      //           {/*    <input type='text' id='message' name='message'/>*/}
+      //           {/*    <label htmlFor='image'>image</label>*/}
+      //           {/*    <input type='text' id='image' name='image'/>*/}
+      //           {/*    <label htmlFor='private'>Private only</label>*/}
+      //           {/*    <input type='checkbox' id='private' name='private'/>*/}
+      //           {/*    <input type='hidden' name='date' value={Date.now()}/>*/}
+      //           {/*    <button>Submit</button>*/}
+      //
+      //           {/*</form>*/}
+      //           <Form className='addForm' onSubmit={this.addTweet} >
+      //               <div>
+      //                   <label htmlFor='message'>Message</label>
+      //                   <br/>
+      //                   <FormControl type='text' placeholder="What's happening? " name='message' id='message'/>
+      //               </div>
+      //               <div>
+      //                   <label htmlFor='image'>Image</label>
+      //                   <br/>
+      //                   <FormControl type='text' name='image' id='image'/>
+      //               </div>
+      //               <div>
+      //                   <Form.Check type="checkbox" name='private' label="Private only?" />
+      //
+      //               </div>
+      //               <div>
+      //
+      //                   <FormControl type='hidden' name='date' value={Date.now()}/>
+      //               </div>
+      //
+      //               <div className={'centerbutton'}>
+      //                   <Button variant='light' size='lg' type='submit'>Submit</Button>
+      //               </div>
+      //           </Form>
+      //           <div className="divAllTweets">{this.props.tweets}</div>
+      //       </div>
+      //   )
+      // }
 
           return(
               <div>
               <div className="divAllTweets">
-          {this.props.mapHomeTweets}
+                    {this.props.mapHomeTweets}
               </div>
               </div>
           )

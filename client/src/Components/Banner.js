@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import '../App.css';
 import Search from "./Search";
 import Register from "./Register";
+import MyTweets from "./MyTweets";
 import {BrowserRouter as Router, Route,Link,Redirect} from "react-router-dom";
 
 import Tweets from "./Tweets";
@@ -127,6 +128,7 @@ export default class Banner extends Component{
                 <div>
                     <Navbar bg="warning" expand="lg">
                         <Navbar.Brand><Link to='/' className='noUnderline'>Passel</Link></Navbar.Brand>
+                        <Navbar.Brand><Link to='/myTweets' className='noUnderline'>My Tweets</Link></Navbar.Brand>
                         <Navbar.Toggle aria-controls="basic-navbar-nav" />
                         <Navbar.Collapse id="basic-navbar-nav">
                             <Nav className="mr-auto">
@@ -161,8 +163,8 @@ export default class Banner extends Component{
                     {/*<Link to={'/tweets'}>Tweets</Link>*/}
                         {/*<Route   exact path={'/'} component={()=> <HomePage/>}/>*/}
                         {/*{this.props.tweet_id}?(<Redirect to='/edit'/>):()*/}
-                        <Route exact path={'/'} component={()=> <Tweets tweets={this.props.mapTweets} username={this.props.username} session={this.props.session} tweet_id={this.props.tweet_id} changeID={this.props.changeID} searchBar={this.searchBar}
-                                                                        search={this.state.search}/>}/>
+                        <Route exact path={'/'} component={()=> <Tweets tweets={this.props.mapTweets} username={this.props.username} session={this.props.session} tweet_id={this.props.tweet_id} changeID={this.props.changeID} searchBar={this.searchBar} search={this.state.search} mapHomeTweets={this.props.mapHomeTweets}/>}/>
+                        <Route path={'/myTweets'} component={()=> <MyTweets tweets={this.props.mapTweets} username={this.props.username} session={this.props.session} tweet_id={this.props.tweet_id} changeID={this.props.changeID} mapHomeTweets={this.props.mapHomeTweets} search={this.state.search}/> }/>
                         <Route  path={'/search'} component={()=><Search search={this.state.search} />}/>
                         <Route path={'/edit'} component={()=><Edit  session={this.props.session} id={this.props.tweet_id} changeID={this.props.changeID} />}/>
                         <Route  path={'/register'} component={()=><Register  registerForm={this.registerForm}/>}/>
@@ -242,7 +244,7 @@ export default class Banner extends Component{
                 {/*    <Link to='/' onClick={this.homelogout}>LogOut</Link>*/}
                     {/*<Route  exact path={'/'} component={()=> <HomePage/>}/>*/}
                     <Route exact path={'/'} component={()=> <Tweets tweets={this.props.mapTweets} username={this.props.username} session={this.props.session} tweet_id={this.props.tweet_id} changeID={this.props.changeID} mapHomeTweets={this.props.mapHomeTweets} search={this.state.search}/> }/>
-
+                    <Route path={'/myTweets'} component={()=> <MyTweets tweets={this.props.mapTweets} username={this.props.username} session={this.props.session} tweet_id={this.props.tweet_id} changeID={this.props.changeID} mapHomeTweets={this.props.mapHomeTweets} search={this.state.search}/> }/>
                     <Route  path={'/search'} component={()=><Search search={this.state.search} />}/>
                     <Route  path={'/register'} component={()=><Register  search={this.state.search} registerForm={this.registerForm} message={this.state.message}/>}/>
                     {/*<Route path={'/loginFail'} component={()=><LoginFail change={this.change}/>}/>*/}
