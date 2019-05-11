@@ -27,6 +27,7 @@ class App extends Component
 
     collectdata=(e)=>//grab data of all public tweets
     {
+        console.log('Am I running?');
         fetch('/users/hometweets')
             .then(data => data.json())
             .then(jsondata => this.setState({hometweets: jsondata}))
@@ -35,30 +36,32 @@ class App extends Component
 
     componentDidMount=(e)=>
     {
-        this.collectdata()
-
-            // fetch('/users/hometweets')
-            //     .then(data => data.json())
-            //     .then(jsondata => this.setState({hometweets: jsondata}))
-
+        console.log('Component Did Mount');
+        this.collectdata();
+        fetch('/users',
+            {
+                credentials: 'include',
+            })
+            .then(data => data.text())
+            .then(text => this.setState({username: text}));
+        this.session();
     };
 
      componentWillUnmount=(e)=> {
          // this.setState({hometweets:[]});
-         this.setState({user:[]});
-         this.setState({isLogged:''})
+         // this.setState({user:[]});
+         // this.setState({isLogged:''})
      };
 
     session=(e)=>
-    {
-        if(this.state.username) {   //if there is a user looged in, call this function to fetch all of the user's data from mongo
-            fetch('/users/currentuser/' + this.state.username)
+    {     console.log ('session ran');
+            // fetch('/users/currentuser/')
+        fetch('/users/currentuser/',
+            {
+                credentials: 'include',
+            })
                 .then(data => data.json())
-                .then(jsondata => this.setState({user: jsondata})
-                )
-
-        }
-
+                .then(jsondata => this.setState({user: jsondata}))
 
     };
 
@@ -67,10 +70,11 @@ class App extends Component
     //     this.setState({username:''});
     // };
 
-    // noUser=(e)=>
-    // {
-    //     this.setState({username:null})
-    // };
+    noUser=(e)=>
+    {
+        this.setState({username:null});
+        this.setState({user:[]});
+    };
     loginInfo=(username)=>   //function that runs when user enters information to login and calls back the session function
     {
         this.setState({username:username});
@@ -85,8 +89,10 @@ class App extends Component
      };
     logout=(e)=> //logs out the user
     {
-        this.setState({ username: ''});
-        fetch('/users/logout')
+        // this.setState({ username: ''});
+        fetch('/users/logout',{
+            credentials: 'include',
+        })
             .then(data => data.text())
             .then(text => console.log(text));
         this.changeID();
@@ -108,6 +114,7 @@ class App extends Component
 
 
         console.log(this.state.user);
+        console.log(this.state.username);
 
         const mapHomeTweets=this.state.hometweets.map((ele)=>
         {

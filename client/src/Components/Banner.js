@@ -42,14 +42,28 @@ export default class Banner extends Component{
         fetch('/users/login',
             {
                 method:"POST",
+                credentials: 'include',
                 headers:{"Accept":"application/json","Content-Type":"application/json"},
                 body:JSON.stringify({username:e.target.username.value,password:e.target.password.value})
             })
             .then(data=>data.json())
             .then(jsondata=>this.props.loginInfo(jsondata['username']))
+            // .then(()=>this.kennTest());
+
 
 
     };
+
+    // kennTest(){
+    //     fetch('/users/kennTest',{
+    //         method:"POST",
+    //         credentials: 'include',
+    //         headers:{"Accept":"application/json","Content-Type":"application/json"},
+    //     })
+    //         .then(data=>data.text())
+    //         .then(data=>console.log(data));
+    // }
+
 
     homelogout=(e)=>
     {
@@ -174,6 +188,7 @@ export default class Banner extends Component{
             )
         }
         console.log('On logout')
+        console.log(this.props.username);
         return (
 
             <div>

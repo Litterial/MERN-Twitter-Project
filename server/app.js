@@ -24,8 +24,10 @@ app.use(expressSession({
   name: "cookie_name",
   // store: "sessionStore", // connect-mongo session store
   proxy: true,
-  resave: true,
-  saveUninitialized: true
+  resave: false,
+  saveUninitialized: false,
+  expires: new Date(Date.now() + (60 * 60* 24 * 7 * 1000)),
+  cookie: { }
 }));
 
 
@@ -41,6 +43,8 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
 app.use(express.static(path.join(__dirname, 'public')));
+
+app.use(cookieParser());
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);

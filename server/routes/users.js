@@ -8,6 +8,7 @@ var bCrypt = require('bcrypt-nodejs'); // used to hash paswords
 var passport = require('passport'); //middleware for authentication
 var LocalStrategy = require('passport-local').Strategy;
 
+
 // Initialize Passport and restore cookie data, if any, from the
 // session.
 router.use(passport.initialize());
@@ -44,10 +45,23 @@ var createHash = function(password){
 //   })
 // });
 
+
+router.get('/',(req,res)=>
+{
+  TwitterUser.find({username:req.session.username},(err,results)=>
+  {
+    if(req.session.username)
+      res.send(req.session.username);
+    else
+      res.send(null)
+  })
+});
 //test to see if this user is in database
-router.get('/currentuser/:user', function(req, res, next) {
+router.get('/currentuser/', function(req, res, next) {
   console.log(req.session);
-  TwitterUser.find({username:req.params.user},(err,results)=>
+ console.log(req.session.username);
+  console.log(req.session.id);
+  TwitterUser.find({username:req.session.username},(err,results)=>
   {
     err ? res.send(err): res.send(results)
   })
@@ -55,7 +69,7 @@ router.get('/currentuser/:user', function(req, res, next) {
 
 router.get('/testSession',(req,res)=>
 {
-  console.log(res.session);
+  console.log(req.session.username);
   TwitterUser.find({username:req.session.username},(err,results)=>
   {
     err? res.send(err):res.send(results)
@@ -71,16 +85,16 @@ router.get('/hometweets',(req,res)=>
     if (err) res.send(err);
     else
     {
-      console.log('test');
+      // console.log('test');
       var homearray=[];
-      console.log((results).length);
+      // console.log((results).length);
       for(x=0; x<(results).length;x++)
       {
-        console.log((results[x].tweets).length);
+        // console.log((results[x].tweets).length);
         for(y=0;y<((results[x].tweets).length);y++)
         {
-          console.log(results[x].tweets[y]);
-          console.log(results[x].tweets[y].message);
+          // console.log(results[x].tweets[y]);
+          // console.log(results[x].tweets[y].message);
           if(results[x].tweets[y].private=='false' )
           {
             homearray.push({"username":results[x].username,"tweets":results[x].tweets[y]});
@@ -93,7 +107,7 @@ router.get('/hometweets',(req,res)=>
     }
 
   })
-})
+});
 
 //search bar
 router.post('/search/',(req,res)=>
@@ -132,6 +146,8 @@ router.post('/search/',(req,res)=>
 // creates a tweet for a user
 router.post('/tweets/:user',(req,res)=>
 {
+  console.log("User tweets");
+  console.log(req.session);
   TwitterUser.findOneAndUpdate({username:req.params.user},{$push:{tweets:{message:req.body.message,image:req.body.image,private:req.body.private,date:req.body.date,_id:new tweetID()}}},(err,results)=>
   {
     // console.log(req.body);
@@ -265,7 +281,7 @@ passport.use(new LocalStrategy(
           return done(null, false, { message: 'Incorrect username/password.' });
         }
         console.log("4");
-        console.log(user);
+        // console.log(user);
         return done(null, user, { user: user.username });
       });
     }
@@ -275,10 +291,21 @@ router.post('/login',passport.authenticate('local',{failureRedirect:'/users/fail
     (req,res)=>
     {
       // console.log(req.body);
+      console.log(req.session);
       req.session.username=req.user.username;
-      context={username:req.body.username,truelog:''};
+      req.session.success = true;
+      req.session.save();
+      console.log(req.session);
+      console.log(req.session.id);
+      context={username:req.session.username,truelog:''};
       res.send(context)
     });
+
+router.post('/kennTest', (req, res)=>{
+  console.log("Okay???");
+  console.log(req.session);
+  res.send("Hopefully");
+});
 
 router.get('/faillogin',(req,res)=>
 {
@@ -293,7 +320,7 @@ router.get('/logout', (req, res, next) => {
   // Clearing the session (cookie) to get rid of the saved username
   // req.session.username =null;
 
-  req.session=null;
+  req.session.username=null;
   console.log(req.session);
 
   res.send("logged out")
