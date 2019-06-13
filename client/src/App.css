@@ -84,8 +84,8 @@ html,body
 {
   height:30px;
   width:30px;
-  background:#ffc107;
-
+  margin-left: 1%;
+  margin-top: 1%;
 }
 
 .addForm

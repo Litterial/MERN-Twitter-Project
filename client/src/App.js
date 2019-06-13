@@ -123,7 +123,6 @@ class App extends Component
                     <div className='centertweets'>{ele.username}</div>
                     <div className='centertweets'>{ele.tweets.message}</div>
                     <div className='centertweets'><img className='resizeimage' src={ele.tweets.image}/></div>
-                    <div className='centertweets'>{ele.tweets.private}</div>
                 </div>
 
             )
@@ -150,16 +149,16 @@ class App extends Component
         //list out the tweets in the most recent order. Here I can also set how many tweets I want to return
             {
                 return test.tweets.map((element,ndx)=> {
-                    var post='https://publicdomainvectors.org/photos/noun_project_99.png';
-                    if (element.private=='false')
-                        var post='https://shmector.com/_ph/9/755061300.jpg';
+                    var post='lock-locked-8x.png';
+                    if (element.private =='false')
+                        var post='globe-8x.png';
 
                     console.log(element._id);
                     // this.setState({tweet_id:element.id});
                     {
                         return (
                             <div className='tweetbackgroundB' key={element._id}>
-                                <img className='small'src={post}/>
+                                <img className='small' src={post}/>
                                 <div className='centertweets'>{test.username}</div>
                                 <div className='centertweets'>{element.message}</div>
                                 <div className='centertweets'><img className='resizeimage' src={element.image}/></div>
