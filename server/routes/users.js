@@ -192,6 +192,18 @@ router.route('/mytweets/:_id')
           }
         }
       })
+    })
+
+    .delete((req,res)=>
+    {
+      TwitterUser.findOneAndUpdate({tweets:{$elemMatch:{_id:req.params._id}}},{$pull:{tweets:{_id:req.params._id}}},{multi:true},(err,results)=>
+          {
+            if (err) res.send(err);
+            else {
+              console.log(req.params._id);
+              res.send(results);}
+          }
+      )
     });
 
 
