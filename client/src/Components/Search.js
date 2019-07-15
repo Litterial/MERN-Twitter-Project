@@ -10,8 +10,8 @@ export default class Search extends Component{
 
                     return (
                         <div className='resultsElements' key={element.tweets._id}>
-                            <h1>{element.username}</h1>
-                            <h1>{element.tweets.message}</h1>
+                            <div>{element.username}</div>
+                            <div>{element.tweets.message}</div>
                             <img className='resizeimage' src={element.tweets.image}/>
                         </div>)
                 }
