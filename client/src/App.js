@@ -27,7 +27,7 @@ class App extends Component
 
     collectdata=(e)=>//grab data of all public tweets
     {
-        console.log('Am I running?');
+        console.log('fetching /users/hometweets');
         fetch('/users/hometweets')
             .then(data => data.json())
             .then(jsondata => this.setState({hometweets: jsondata}))
@@ -36,7 +36,7 @@ class App extends Component
 
     componentDidMount=(e)=>
     {
-        console.log('Component Did Mount');
+        console.log('Component did mount from App.js');
         this.collectdata();
         fetch('/users',
             {
@@ -47,11 +47,7 @@ class App extends Component
         this.session();
     };
 
-     componentWillUnmount=(e)=> {
-         // this.setState({hometweets:[]});
-         // this.setState({user:[]});
-         // this.setState({isLogged:''})
-     };
+
 
     session=(e)=>
     {     console.log ('session ran');
@@ -65,10 +61,6 @@ class App extends Component
 
     };
 
-    // change=(e)=>
-    // {
-    //     this.setState({username:''});
-    // };
 
     noUser=(e)=>
     {
@@ -112,8 +104,9 @@ class App extends Component
     render()
     {
 
-
+        console.log('this.state.user');
         console.log(this.state.user);
+        console.log('this.state.username');
         console.log(this.state.username);
 
         const mapHomeTweets=this.state.hometweets.map((ele)=>
@@ -177,7 +170,7 @@ class App extends Component
           <div className="App">
             <header className="App-header">
 
-                <Banner homelogout={this.logout} loginInfo={this.loginInfo} session={this.session} mapHomeTweets={mapHomeTweets} isLogged={this.state.isLogged}
+                <Banner logout={this.logout} loginInfo={this.loginInfo} session={this.session} mapHomeTweets={mapHomeTweets} isLogged={this.state.isLogged}
                          mapUser={mapUser} mapTweets={mapTweets} tweet_id={this.state.tweet_id} username={this.state.username} changeID={this.changeID} /*searchBar={this.searchBar}*/ /*searchArray={this.state.searchArray} searchFlag={this.state.searchFlag}*//>
             </header>
           </div>

@@ -5,9 +5,11 @@ import {BrowserRouter as Router, Route,Link,Redirect} from "react-router-dom";
 import {Button, Form, FormControl} from "react-bootstrap";
 
 
+
 export default class Tweets extends Component
 {
     constructor(props) {super(props)}
+
 
     addTweet=(e)=>
     {
@@ -33,9 +35,10 @@ export default class Tweets extends Component
 
 
     };
+
     render()
     {
-
+      // console.log(values);
       if(this.props.tweet_id)
       {
           return <Redirect to='/edit'/>
@@ -44,8 +47,8 @@ export default class Tweets extends Component
       }
       if(this.props.search)
       {
-          console.log('hit search')
-          return<Redirect to='/search'/>
+          console.log('redirect to search from tweets');
+          return<Redirect to={'/search?q='+this.props.query}/>
       }
       //
       // if(this.props.username)

@@ -16,6 +16,7 @@ import{Button} from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 // import { DropdownButton } from 'react-bootstrap';
 import { MenuItem } from 'react-bootstrap';
+import queryString from 'query-string'
 
 
 
@@ -23,18 +24,41 @@ export default class Banner extends Component{
 
     constructor(props) {
         super(props);
-        this.state=({search:false,
+        this.state=({search:false,query:'',
         message:''})
     }
 
-    componentDidMount=(e)=>
-    {
-        // console.log(this.props.mapped)
+    componentDidMount() {
+        console.log('componentDidMount on banner');
+        const values = queryString.parse(window.location.search);
+        console.log(values);
+        console.log(values.q);
+        if (values.q && values.q !== undefined) {
+            console.log('both are true');
+            this.setState({query:values.q});
+            fetch('users/search/' + values.q)
 
-    } ;
-    // componentWillMount=(e)=> {
-    //     this.setState({search:false})
-    // };
+                .then(data=>data.json())
+                .then(jsondata=>this.setState({search:jsondata}))
+        }
+
+    }
+
+    changeQuery=(e)=>
+    {
+        const values = queryString.parse(window.location.search);
+        console.log(values);
+        console.log(values.q);
+        if (values.q && values.q !== undefined) {
+            console.log('both are true');
+            this.setState({query:values.q});
+            fetch('users/search/' + values.q)
+
+                .then(data=>data.json())
+                .then(jsondata=>this.setState({search:jsondata}))
+
+                 }
+    };
 
     login=(e)=>
     {
@@ -65,9 +89,9 @@ export default class Banner extends Component{
     // }
 
 
-    homelogout=(e)=>
+    logout=(e)=>
     {
-        this.props.homelogout()
+        this.props.logout()
         // this.setState({logged:false,message:''});
         // fetch('/users/logout')
         //     .then(data=>data.text())
@@ -82,8 +106,9 @@ export default class Banner extends Component{
     searchBar=(e)=>
     {
         e.preventDefault();
-        console.log('entered on banner');
+        this.setState({query:e.target.search.value});
         console.log(e.target.search.value);
+        console.log('fetching /users/search/ from post');
         fetch('/users/search/',
             {
                 method:"POST",
@@ -98,7 +123,7 @@ export default class Banner extends Component{
             })
             .then(data=>data.json())
             .then(jsondata=>this.setState({search:jsondata}))
-            .then(e.target.search.value='')
+            // .then(e.target.search.value='')
     };
 
     registerForm=(e)=>
@@ -119,11 +144,6 @@ export default class Banner extends Component{
 
     };
 
-    // searchBar=(e)=>
-    // {
-    //     console.log('Banner search')
-    //     this.props.searchBar();
-    // };
 
     clickRegister=(e)=>
     {
@@ -132,9 +152,11 @@ export default class Banner extends Component{
 
 
     render() {
+        console.log('this.state.query');
+        console.log(this.state.query);
         if(this.props.username)
         {
-            console.log('ON user')
+            console.log('ON user');
             // console.log(this.props.mapUser);
             // console.log(this.props.mapTweets);
             return(
@@ -163,7 +185,7 @@ export default class Banner extends Component{
                             <div className ='padNavbar'>
                             Hi {this.props.username}
                             </div>
-                            <Link to='/' className ='padNavbar' onClick={this.homelogout}>Logout</Link>
+                            <Link to='/' className ='padNavbar' onClick={this.logout}>Logout</Link>
                         </Navbar.Collapse>
                     </Navbar>
 
@@ -177,17 +199,17 @@ export default class Banner extends Component{
                     {/*<Link to={'/tweets'}>Tweets</Link>*/}
                         {/*<Route   exact path={'/'} component={()=> <HomePage/>}/>*/}
                         {/*{this.props.tweet_id}?(<Redirect to='/edit'/>):()*/}
-                        <Route exact path={'/'} component={()=> <Tweets tweets={this.props.mapTweets} username={this.props.username} session={this.props.session} tweet_id={this.props.tweet_id} changeID={this.props.changeID} searchBar={this.searchBar} search={this.state.search} mapHomeTweets={this.props.mapHomeTweets}/>}/>
-                        <Route path={'/myTweets'} component={()=> <MyTweets tweets={this.props.mapTweets} username={this.props.username} session={this.props.session} tweet_id={this.props.tweet_id} changeID={this.props.changeID} mapHomeTweets={this.props.mapHomeTweets} search={this.state.search}/> }/>
-                        <Route  path={'/search'} component={()=><Search search={this.state.search} />}/>
-                        <Route path={'/edit'} component={()=><Edit  session={this.props.session} id={this.props.tweet_id} changeID={this.props.changeID} />}/>
-                        <Route  path={'/register'} component={()=><Register  registerForm={this.registerForm}/>}/>
+                        <Route exact path={'/'} component={()=> <Tweets tweets={this.props.mapTweets} username={this.props.username} session={this.props.session} tweet_id={this.props.tweet_id} changeID={this.props.changeID} search={this.state.search} mapHomeTweets={this.props.mapHomeTweets} query={this.state.query} />}/>
+                        <Route path={'/myTweets'} component={()=> <MyTweets tweets={this.props.mapTweets} username={this.props.username} session={this.props.session} tweet_id={this.props.tweet_id} changeID={this.props.changeID} mapHomeTweets={this.props.mapHomeTweets} search={this.state.search} query={this.state.query} /> }/>
+                        <Route  path={'/search'} component={()=><Search search={this.state.search} query={this.state.query} changeQuery={this.changeQuery} />}/>
+                        <Route path={'/edit'} component={()=><Edit  session={this.props.session} id={this.props.tweet_id} changeID={this.props.changeID} search={this.state.search} query={this.state.query}/>}/>
+                        <Route  path={'/register'} component={()=><Register  registerForm={this.registerForm} search={this.state.search} query={this.state.query}/>}/>
 
                 </div>
                 </Router>
             )
         }
-        console.log('On logout')
+        console.log('On logout');
         console.log(this.props.username);
         return (
 
@@ -258,10 +280,10 @@ export default class Banner extends Component{
                 {/*    /!*<Link to='/register'>Register</Link>*!/*/}
                 {/*    <Link to='/' onClick={this.homelogout}>LogOut</Link>*/}
                     {/*<Route  exact path={'/'} component={()=> <HomePage/>}/>*/}
-                    <Route exact path={'/'} component={()=> <Tweets tweets={this.props.mapTweets} username={this.props.username} session={this.props.session} tweet_id={this.props.tweet_id} changeID={this.props.changeID} mapHomeTweets={this.props.mapHomeTweets} search={this.state.search}/> }/>
-                    <Route path={'/myTweets'} component={()=> <MyTweets tweets={this.props.mapTweets} username={this.props.username} session={this.props.session} tweet_id={this.props.tweet_id} changeID={this.props.changeID} mapHomeTweets={this.props.mapHomeTweets} search={this.state.search}/> }/>
-                    <Route  path={'/search'} component={()=><Search search={this.state.search} />}/>
-                    <Route  path={'/register'} component={()=><Register  search={this.state.search} registerForm={this.registerForm} message={this.state.message}/>}/>
+                    <Route exact path={'/'} component={()=> <Tweets tweets={this.props.mapTweets} username={this.props.username} session={this.props.session} tweet_id={this.props.tweet_id} changeID={this.props.changeID} mapHomeTweets={this.props.mapHomeTweets} search={this.state.search} query={this.state.query}/> }/>
+                    <Route path={'/myTweets'} component={()=> <MyTweets tweets={this.props.mapTweets} username={this.props.username} session={this.props.session} tweet_id={this.props.tweet_id} changeID={this.props.changeID} mapHomeTweets={this.props.mapHomeTweets} search={this.state.search} query={this.state.query}/> }/>
+                    <Route  path={'/search'} component={()=><Search search={this.state.search} query={this.state.query} changeQuery={this.changeQuery}/>}/>
+                    <Route  path={'/register'} component={()=><Register  search={this.state.search} query={this.state.query} registerForm={this.registerForm} message={this.state.message}/>}/>
                     {/*<Route path={'/loginFail'} component={()=><LoginFail change={this.change}/>}/>*/}
                 </Router>
 

@@ -110,33 +110,64 @@ router.get('/hometweets',(req,res)=>
 });
 
 //search bar
-router.post('/search/',(req,res)=>
+router.route('/search/')
+    .post((req,res)=>
+      {
+        TwitterUser.find({"tweets.message":{"$regex":req.body.search,"$options":'i'}},(err,results)=>
+        {
+          if (err) res.send(err);
+          else
+         {
+           var tweetarray=[];
+           var bodystring=req.body.search;
+           // console.log((results).length);
+           for(x=0; x<(results).length;x++)
+           {
+             console.log((results[x].tweets).length);
+             for(y=0;y<((results[x].tweets).length);y++)
+             {
+               console.log(results[x].tweets[y].private);
+               if((results[x].tweets[y].message).toLowerCase().includes(bodystring.toLowerCase()) && results[x].tweets[y].private==="false" )
+               {
+                 tweetarray.push({"username":results[x].username,"tweets":results[x].tweets[y]})
+                 // console.log(tweetarray)
+               }
+             }
+           }
+           // console.log('_________________________________________________________')
+           // console.log(tweetarray)
+           res.send(tweetarray)
+         }
+
+        })
+      });
+router.get(('/search/:search'),(req,res)=>
 {
-  TwitterUser.find({"tweets.message":{"$regex":req.body.search,"$options":'i'}},(err,results)=>
+  TwitterUser.find({"tweets.message":{"$regex":req.params.search,"$options":'i'}},(err,results)=>
   {
     if (err) res.send(err);
     else
-   {
-     var tweetarray=[];
-     var bodystring=req.body.search;
-     // console.log((results).length);
-     for(x=0; x<(results).length;x++)
-     {
-       console.log((results[x].tweets).length);
-       for(y=0;y<((results[x].tweets).length);y++)
-       {
-         console.log(results[x].tweets[y].private);
-         if((results[x].tweets[y].message).toLowerCase().includes(bodystring.toLowerCase()) && results[x].tweets[y].private==="false" )
-         {
-           tweetarray.push({"username":results[x].username,"tweets":results[x].tweets[y]})
-           // console.log(tweetarray)
-         }
-       }
-     }
-     // console.log('_________________________________________________________')
-     // console.log(tweetarray)
-     res.send(tweetarray)
-   }
+    {
+      var tweetarray=[];
+      var bodystring=req.params.search;
+      // console.log((results).length);
+      for(x=0; x<(results).length;x++)
+      {
+        console.log((results[x].tweets).length);
+        for(y=0;y<((results[x].tweets).length);y++)
+        {
+          console.log(results[x].tweets[y].private);
+          if((results[x].tweets[y].message).toLowerCase().includes(bodystring.toLowerCase()) && results[x].tweets[y].private==="false" )
+          {
+            tweetarray.push({"username":results[x].username,"tweets":results[x].tweets[y]})
+            // console.log(tweetarray)
+          }
+        }
+      }
+      // console.log('_________________________________________________________')
+      // console.log(tweetarray)
+      res.send(tweetarray)
+    }
 
   })
 });

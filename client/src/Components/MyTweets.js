@@ -35,7 +35,7 @@ export default class MyTweets extends Component
     };
     render()
     {
-       console.log("I'm here on the myTweets page.")
+       console.log("I'm here on the myTweets page.");
         if(this.props.tweet_id)
         {
             return <Redirect to='/edit'/>

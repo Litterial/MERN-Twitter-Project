@@ -1,9 +1,33 @@
 import React, { Component } from 'react';
 import '../App.css';
+import queryString from 'query-string'
+import {BrowserRouter as Router, Route,Link,Redirect} from "react-router-dom";
+
 
 export default class Search extends Component{
 
+    componentDidMount() {
+        console.log('component mounted on search.js');
+        console.log(this.props.query);
+
+
+        // return <Redirect to ={'/register'}/>
+
+
+    }
+
+
+
+
     render() {
+        const values = queryString.parse(window.location.search);
+        console.log(values);
+        console.log(values.q);
+        if (values.q && values.q !== undefined && this.props.query!=values.q && this.props.query)
+        {
+            return<Redirect to={'/search?q='+this.props.query}/>
+        }
+
         if (this.props.search) {
             const mapSearch = this.props.search.map((element) => {
 
